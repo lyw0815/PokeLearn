@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "684802764822",
+    "firebase_url": "https://pokelearn-9cf23.firebaseio.com",
+    "project_id": "pokelearn-9cf23",
+    "storage_bucket": "pokelearn-9cf23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684802764822:android:f3f72a291d83e8eb",
+        "android_client_info": {
+          "package_name": "com.example.pokelearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684802764822-7qmolc4rmosm3567oa592uchdpohbugs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANbU1_HIEnoyQXOPKODpTeyfwIeqvnuGw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

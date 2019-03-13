@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.pokelearn">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher_pokelearn"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_pokelearn_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activities.I_ChapterDetails"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activities.ChapterList"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.S_ChapterList"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.I_ChapterList"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.CreateChapter"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.I_ChapterList" />
+        <activity
+            android:name=".Activities.I_MyQuiz"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.Quiz"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.CreateQuiz"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.Learn"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity android:name=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.Search"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.Discuss"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.S_Progress"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.S_MyCourse"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.I_Progress"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.I_MyCourse"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.CreateCourse"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.Home"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.Login"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.Register"
+            android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>
