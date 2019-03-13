@@ -30,6 +30,7 @@ public class Search extends AppCompatActivity {
     SearchCourseAdapter SearchCourseAdapter;
 
     ArrayList<String> courseNameList;
+    ArrayList<String> courseIdList;
     ArrayList<String> courseDescList;
     ArrayList<String> courseCoverImgList;
 
@@ -38,9 +39,9 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.SearchToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle("Search Courses"); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.SearchToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Search Courses");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         search_edit_text = (EditText) findViewById(R.id.search_editText);
@@ -53,18 +54,17 @@ public class Search extends AppCompatActivity {
         search_recycle_view.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
         courseNameList = new ArrayList<>();
+        courseIdList = new ArrayList<>();
         courseDescList = new ArrayList<>();
         courseCoverImgList = new ArrayList<>();
 
         search_edit_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -75,6 +75,7 @@ public class Search extends AppCompatActivity {
                 }
                 else {
                     courseNameList.clear();
+                    courseIdList.clear();
                     courseDescList.clear();
                     courseCoverImgList.clear();
                     search_recycle_view.removeAllViews();
@@ -90,19 +91,21 @@ public class Search extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 courseNameList.clear();
+                courseIdList.clear();
                 courseDescList.clear();
                 courseCoverImgList.clear();
                 search_recycle_view.removeAllViews();
 
                 int counter = 0;
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    String cid = snapshot.getKey();
                     String course_name = snapshot.child("courseName").getValue(String.class);
+                    String course_id = snapshot.child("courseId").getValue(String.class);
                     String course_desc = snapshot.child("courseDesc").getValue(String.class);
                     String course_cvr = snapshot.child("courseCoverImgUrl").getValue(String.class);
 
                     if (course_name.toLowerCase().contains(searchedString)){
                         courseNameList.add(course_name);
+                        courseIdList.add(course_id);
                         courseDescList.add(course_desc);
                         courseCoverImgList.add(course_cvr);
                         counter++;
@@ -112,7 +115,7 @@ public class Search extends AppCompatActivity {
                         break;
                     }
                 }
-                SearchCourseAdapter = new SearchCourseAdapter(Search.this, courseNameList, courseDescList,courseCoverImgList);
+                SearchCourseAdapter = new SearchCourseAdapter(Search.this, courseNameList, courseIdList, courseDescList,courseCoverImgList);
                 search_recycle_view.setAdapter(SearchCourseAdapter);
             }
 

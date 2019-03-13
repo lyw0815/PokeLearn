@@ -9,17 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.pokelearn.Activities.ChapterList;
 import com.example.pokelearn.R;
-
 import java.util.ArrayList;
 
 public class SearchCourseAdapter extends RecyclerView.Adapter<SearchCourseAdapter.CourseViewHolder> {
     Context context;
     ArrayList<String> courseNameList;
+    ArrayList<String> courseIdList;
     ArrayList<String> courseDescList;
     ArrayList<String> courseCoverImgList;
 
@@ -38,9 +36,10 @@ public class SearchCourseAdapter extends RecyclerView.Adapter<SearchCourseAdapte
     }
 
 
-    public SearchCourseAdapter(Context context, ArrayList<String> courseNameList, ArrayList<String>courseDescList, ArrayList<String>courseCoverImgList){
+    public SearchCourseAdapter(Context context, ArrayList<String> courseNameList,ArrayList<String> courseIdList, ArrayList<String>courseDescList, ArrayList<String>courseCoverImgList){
         this.context = context;
         this.courseNameList = courseNameList;
+        this.courseIdList = courseIdList;
         this.courseDescList = courseDescList;
         this.courseCoverImgList = courseCoverImgList;
     }
@@ -61,12 +60,10 @@ public class SearchCourseAdapter extends RecyclerView.Adapter<SearchCourseAdapte
         holder.course_combo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(context, "clicked: "+ courseNameList.get(position),Toast.LENGTH_LONG).show();
-
                 Intent ChapterList =new Intent(context, ChapterList.class);
                 ChapterList.putExtra("CourseName", courseNameList.get(position));
+                ChapterList.putExtra("CourseId", courseIdList.get(position));
                 context.startActivity(ChapterList);
-
             }
         });
     }

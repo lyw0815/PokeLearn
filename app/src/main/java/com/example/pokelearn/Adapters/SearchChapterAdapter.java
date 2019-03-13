@@ -44,9 +44,7 @@ public class SearchChapterAdapter extends RecyclerView.Adapter<SearchChapterAdap
 
     @Override
     public void onBindViewHolder(SearchChapterAdapter.ChapterViewHolder holder, final int position){
-
         holder.chapter_title.setText(chapterList.get(position));
-
     }
 
     @Override

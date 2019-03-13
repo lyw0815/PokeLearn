@@ -8,16 +8,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.pokelearn.Adapters.SearchChapterAdapter;
 import com.example.pokelearn.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -29,7 +26,6 @@ public class ChapterList extends AppCompatActivity {
     TextView courseName;
     RecyclerView chapterLists;
     Button btnEnrol;
-    DatabaseReference dbReference;
     SearchChapterAdapter SearchChapterAdapter;
     ArrayList<String> chapterList;
 
@@ -40,10 +36,12 @@ public class ChapterList extends AppCompatActivity {
 
         Intent i = getIntent();
         final String CourseName = i.getStringExtra("CourseName");
+        Intent j = getIntent();
+        final String CourseId = j.getStringExtra("CourseId");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.ChapterListToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle(CourseName); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.ChapterListToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(CourseName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         courseName = (TextView) findViewById(R.id.chapterListCourseName);
@@ -64,27 +62,25 @@ public class ChapterList extends AppCompatActivity {
 
         chapterList = new ArrayList<>();
 
-        setAdapter(CourseName);
+        setAdapter(CourseName, CourseId);
     }
 
-    private void setAdapter(final String CourseName) {
+    private void setAdapter(final String CourseName, final String CourseId) {
 
-        Query query = FirebaseDatabase.getInstance().getReference("Chapters").orderByChild("chapterSequence");
+        Query query = FirebaseDatabase.getInstance().getReference("Chapters").child(CourseId).orderByChild("chapterSequence");
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                int counter = 0;
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
 
                     String chapter_title = snapshot.child("chapterTitle").getValue(String.class);
-                    String chapter_course = snapshot.child("chapterCourse").getValue(String.class);
-//                    Log.d("query: ", chapter_title);
-                    if (chapter_course.equals(CourseName))
-//                        Log.d("query: ", chapter_title);
+                    String chapter_id = snapshot.child("chapterId").getValue(String.class);
+
+//                    if (chapter_course.equals(CourseName))
                         chapterList.add(chapter_title);
-                }
+            }
                 SearchChapterAdapter = new SearchChapterAdapter(ChapterList.this, chapterList, CourseName);
                 chapterLists.setAdapter(SearchChapterAdapter);
             }

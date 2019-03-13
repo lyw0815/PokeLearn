@@ -5,7 +5,7 @@ public class Chapters {
     String chapterCourse;
     String chapterCourseId;
     String chapterTitle;
-    Integer chapterSequence;
+    Double chapterSequence;
     String chapterMaterialUrl;
     String chapterYoutubeVideoId;
 
@@ -15,7 +15,7 @@ public class Chapters {
     }
 
     public Chapters(String chapterId, String chapterCourse, String chapterCourseId, String chapterTitle,
-                    Integer chapterSequence, String chapterMaterialUrl, String chapterYoutubeVideoId) {
+                    Double chapterSequence, String chapterMaterialUrl, String chapterYoutubeVideoId) {
         this.chapterId = chapterId;
         this.chapterCourse = chapterCourse;
         this.chapterCourseId = chapterCourseId;
@@ -39,7 +39,7 @@ public class Chapters {
         return chapterTitle;
     }
 
-    public Integer  getChapterSequence() {
+    public Double  getChapterSequence() {
         return chapterSequence;
     }
 

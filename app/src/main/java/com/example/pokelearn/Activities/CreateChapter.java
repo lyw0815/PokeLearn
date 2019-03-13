@@ -67,9 +67,9 @@ public class CreateChapter extends AppCompatActivity {
         Toast.makeText(CreateChapter.this, CourseId, Toast.LENGTH_SHORT).show();
         Log.d("ERROR 2: ", CourseName);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.createChapterToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle("Create Chapter"); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.createChapterToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Create Chapter");
 
         storage = FirebaseStorage.getInstance();
 
@@ -119,21 +119,16 @@ public class CreateChapter extends AppCompatActivity {
         final String title = chapterTitle.getText().toString().trim();
 
         String seq = chapterSeq.getText().toString().trim();
-        final Integer sequence = Integer.parseInt(seq);
+        final Double sequence = Double.parseDouble(seq);
 
         String youtubeUrl = youTubeUrl.getText().toString().trim();
         final String youtubeVideoId = youtubeUrl.substring(youtubeUrl.lastIndexOf("/") +1);
-        Uri uri = pdfUri;
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading file...");
         progressDialog.setProgress(0);
         progressDialog.show();
-
-      //  final String fileName=System.currentTimeMillis()+"";
-//        StorageReference storageReference = storage.getReference();
-//        storageReference.child("LearningMaterials").child(fileName).putFile(pdfUri)
 
         stReference = FirebaseStorage.getInstance().getReference("LearningMaterials");
 
@@ -147,9 +142,6 @@ public class CreateChapter extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
-
-                // Continue with the task to get the download URL
-
                 return fileReference.getDownloadUrl();
             }
         })
@@ -193,19 +185,10 @@ public class CreateChapter extends AppCompatActivity {
 
             }
         });
-//              .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-//                progressDialog.setProgress(currentProgress);
-//            }
-//        });
     }
 
     private void selectPdf() {
         Intent intent = new Intent();
-//        intent.setType("application/pdf");
         intent.setType("application/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUESCODE);
@@ -217,8 +200,6 @@ public class CreateChapter extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null)
        {
            pdfUri = data.getData();
-
-           ////////////
 
            String uriString = pdfUri.toString();
            File myFile = new File(uriString);
@@ -240,8 +221,6 @@ public class CreateChapter extends AppCompatActivity {
            } else if (uriString.startsWith("file://")) {
                displayName = myFile.getName();
            }
-
-           /////
 
        }
        else
