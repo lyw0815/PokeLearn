@@ -52,13 +52,13 @@ public class Learn extends AppCompatActivity  {
         Intent j = getIntent();
         final String CourseId = i.getStringExtra("CourseId");
 //        CourseId = i.getStringExtra("CourseId");
+////
+////        Intent i = getIntent();
+////        url = i.getStringExtra("Url");
+////        Intent j = getIntent();
+////        vid = j.getStringExtra("Vid");
 //
-//        Intent i = getIntent();
-//        url = i.getStringExtra("Url");
-//        Intent j = getIntent();
-//        vid = j.getStringExtra("Vid");
-
-
+//
         Toolbar toolbar = (Toolbar) findViewById(R.id.learnToolbar); // get the reference of Toolbar
         setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
         getSupportActionBar().setTitle("Learn"); // setting a title for this Toolbar
@@ -66,34 +66,54 @@ public class Learn extends AppCompatActivity  {
 
         Toast.makeText(getApplicationContext(), "query LEARN"+ ChapterId,Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), "query LEARN courseid"+ CourseId,Toast.LENGTH_SHORT).show();
-//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference ref = database.getReference().child(CourseId).child(ChapterId);
-//
-//        ref.addValueEventListener(new ValueEventListener() {
-//                                      @Override
-//                                      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-////                                          for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                                              String chapter_title = dataSnapshot.child("chapterTitle").getValue(Chapters.class).getChapterTitle();
-//                                              String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
-//                                              String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
-//                                              String chapter_id = dataSnapshot.child("chapterId").getValue(String.class);
-//
-//                                              Toast.makeText(getApplicationContext(), "IN "+ chapter_url,Toast.LENGTH_SHORT).show();
-////                                              if (chapter_id.equals(ChapterId)) {
-//                                                  url = chapter_url;
-//                                                  vid = chapter_vid;
-////                                              }
-////                                          }
-//                                      }
-//
-//                                      @Override
-//                                      public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                      }
-//                                  });
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
+
+        ref.addValueEventListener(new ValueEventListener() {
+                                      @Override
+                                      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+//                                          for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                                              String chapter_title = dataSnapshot.child("chapterTitle").getValue(Chapters.class).getChapterTitle();
+                                              String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
+                                              String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
+                                              String chapter_id = dataSnapshot.child("chapterId").getValue(String.class);
+
+                                              Toast.makeText(getApplicationContext(), "IN "+ chapter_vid,Toast.LENGTH_SHORT).show();
+//                                              if (chapter_id.equals(ChapterId)) {
+                                                  url = chapter_url;
+                                                  vid = chapter_vid;
+                                                  callTab();
+//                                              }
+//                                          }
+                                      }
+
+                                      @Override
+                                      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                      }
+                                  });
 
 
+//        // Create the adapter that will return a fragment for each of the three
+//        // primary sections of the activity.
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+//
+//        // Set up the ViewPager with the sections adapter.
+//        mViewPager = (ViewPager) findViewById(R.id.container);
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
+//
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager(mViewPager);
+//
+//        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+
+    }
+
+    public void callTab() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -107,8 +127,6 @@ public class Learn extends AppCompatActivity  {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
     }
 
 
@@ -141,8 +159,9 @@ public class Learn extends AppCompatActivity  {
         /**
          * The fragment argument representing the section number for this
          * fragment.
+         *
          */
-
+        public String url, vid;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -168,6 +187,62 @@ public class Learn extends AppCompatActivity  {
             View rootView = inflater.inflate(R.layout.fragment_learn, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            //////////// FROM ON CREATE
+
+            Intent i = getActivity().getIntent();
+            final String ChapterId = i.getStringExtra("ChapterId");
+//       ChapterId = i.getStringExtra("ChapterId");
+            Intent j = getActivity().getIntent();
+            final String CourseId = i.getStringExtra("CourseId");
+//        CourseId = i.getStringExtra("CourseId");
+//
+//        Intent i = getIntent();
+//        url = i.getStringExtra("Url");
+//        Intent j = getIntent();
+//        vid = j.getStringExtra("Vid");
+
+
+            Toast.makeText(getContext(), "query LEARN"+ ChapterId,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "query LEARN courseid"+ CourseId,Toast.LENGTH_SHORT).show();
+
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference().child(CourseId).child(ChapterId);
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+//                                          for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                                              String chapter_title = dataSnapshot.child("chapterTitle").getValue(Chapters.class).getChapterTitle();
+                    String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
+                    String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
+                    String chapter_id = dataSnapshot.child("chapterId").getValue(String.class);
+
+                    Toast.makeText(getContext(), "IN "+ chapter_url,Toast.LENGTH_SHORT).show();
+//                                              if (chapter_id.equals(ChapterId)) {
+                    url = chapter_url;
+                    vid = chapter_vid;
+//                                              }
+//                                          }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+
+            ///////END ONCREATE
+
+
+
+
             return rootView;
         }
     }
@@ -187,21 +262,17 @@ public class Learn extends AppCompatActivity  {
 
             Fragment fragment = null;
 
-            Bundle bundleNotes = new Bundle();
-            bundleNotes.putString("Url", url);
-
-            Bundle bundleVideo = new Bundle();
-            bundleVideo.putString("Vid", vid);
-
-
             switch (position) {
                 case 0:
                     fragment = new Notes();
+                    Bundle bundleNotes = new Bundle();
+                    bundleNotes.putString("Url",url);
                     fragment.setArguments(bundleNotes);
-
                     break;
                 case 1:
                     fragment = new Video();
+                    Bundle bundleVideo = new Bundle();
+                    bundleVideo.putString("Vid", vid);
                     fragment.setArguments(bundleVideo);
                     break;
             }

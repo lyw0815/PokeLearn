@@ -37,34 +37,39 @@ public class Notes extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         pdfUrl = getArguments().getString("Url");
 
         Toast.makeText(getContext(), "IN Notes"+ pdfUrl,Toast.LENGTH_SHORT).show();
 
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+//        pdfUrl = getArguments().getString("Url");
+//
+//        Toast.makeText(getContext(), "IN Notes"+ pdfUrl,Toast.LENGTH_SHORT).show();
+
         View v = inflater.inflate(R.layout.fragment_notes, container, false);
 
-//        String data = getArguments().getString("bundle");
-
-//        Log.d("ERR///", data);
-
-
         WebView webView = v.findViewById(R.id.pdf_web_view);
-
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
 
 //        pdfUrl = "https://firebasestorage.googleapis.com/v0/b/pokelearn-9cf23.appspot.com/o/LearningMaterials%2F1552311681163.pdf?alt=media&token=ffb120cd-cb43-4adb-b7c7-0a29c1c233b6";
 
-//        try {
-//            pdfUrl= URLEncoder.encode(pdfUrl,"UTF-8");
-//            webView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdfUrl);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            pdfUrl= URLEncoder.encode(pdfUrl,"UTF-8");
+            webView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdfUrl);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         return v;
     }

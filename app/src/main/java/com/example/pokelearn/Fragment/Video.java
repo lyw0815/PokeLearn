@@ -47,6 +47,9 @@ public class Video extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        videoId = getArguments().getString("Vid");
+
+
     }
 
     @Override
@@ -54,8 +57,8 @@ public class Video extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        videoId = getArguments().getString("Vid");
-
+//        videoId = getArguments().getString("Vid");
+//
         View v = inflater.inflate(R.layout.fragment_video, container, false);
 
 //        String data = getArguments().getString("bundle2");
