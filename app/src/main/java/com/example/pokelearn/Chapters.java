@@ -6,6 +6,7 @@ public class Chapters {
     String chapterCourseId;
     String chapterTitle;
     Double chapterSequence;
+    String chapterDesc;
     String chapterMaterialUrl;
     String chapterYoutubeVideoId;
 
@@ -15,12 +16,13 @@ public class Chapters {
     }
 
     public Chapters(String chapterId, String chapterCourse, String chapterCourseId, String chapterTitle,
-                    Double chapterSequence, String chapterMaterialUrl, String chapterYoutubeVideoId) {
+                    Double chapterSequence, String chapterDesc, String chapterMaterialUrl, String chapterYoutubeVideoId) {
         this.chapterId = chapterId;
         this.chapterCourse = chapterCourse;
         this.chapterCourseId = chapterCourseId;
         this.chapterTitle = chapterTitle;
         this.chapterSequence = chapterSequence;
+        this.chapterDesc = chapterDesc;
         this.chapterMaterialUrl = chapterMaterialUrl;
         this.chapterYoutubeVideoId = chapterYoutubeVideoId;
     }
@@ -42,6 +44,8 @@ public class Chapters {
     public Double  getChapterSequence() {
         return chapterSequence;
     }
+
+    public String getChapterDesc(){return chapterDesc;}
 
     public String getChapterMaterialUrl() {
         return chapterMaterialUrl;

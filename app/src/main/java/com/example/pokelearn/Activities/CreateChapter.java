@@ -39,7 +39,7 @@ import java.io.File;
 
 public class CreateChapter extends AppCompatActivity {
 
-    EditText chapterTitle, chapterSeq, youTubeUrl;
+    EditText chapterTitle, chapterSeq, chapterDesc, youTubeUrl;
     Button btnPublishChapter;
     Button btnBack;
     Button btnChooseFile;
@@ -75,6 +75,7 @@ public class CreateChapter extends AppCompatActivity {
 
         chapterTitle = (EditText) findViewById(R.id.chapterTitle);
         chapterSeq =  (EditText) findViewById(R.id.chapterSeq);
+        chapterDesc = (EditText) findViewById(R.id.chapterDesc);
         youTubeUrl = (EditText) findViewById(R.id.youTubeUrl);
         btnBack = (Button) findViewById(R.id.btnBack);
         btnChooseFile = (Button) findViewById(R.id.btnChooseFile);
@@ -121,6 +122,8 @@ public class CreateChapter extends AppCompatActivity {
         String seq = chapterSeq.getText().toString().trim();
         final Double sequence = Double.parseDouble(seq);
 
+        final String desc = chapterDesc.getText().toString().trim();
+
         String youtubeUrl = youTubeUrl.getText().toString().trim();
         final String youtubeVideoId = youtubeUrl.substring(youtubeUrl.lastIndexOf("/") +1);
 
@@ -159,6 +162,7 @@ public class CreateChapter extends AppCompatActivity {
                                     CourseId,
                                     title,
                                     sequence,
+                                    desc,
                                     task.getResult().toString().trim(),
                                     youtubeVideoId);
 

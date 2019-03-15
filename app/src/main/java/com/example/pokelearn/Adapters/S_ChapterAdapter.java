@@ -65,46 +65,9 @@ public class S_ChapterAdapter extends RecyclerView.Adapter<S_ChapterAdapter.Chap
         holder.chapter_combo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(context, "clicked: "+ chapterList.get(position),Toast.LENGTH_LONG).show();
-
-
-                // FROM LEARN?????
-
-//                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                DatabaseReference ref = database.getReference().child(courseId).child(chapterId.get(position));
-//
-//                ref.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-////                                          for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-////                                              String chapter_title = dataSnapshot.child("chapterTitle").getValue(Chapters.class).getChapterTitle();
-//                        String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
-//                        String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
-//                        String chapter_id = dataSnapshot.child("chapterId").getValue(String.class);
-//
-////                                              if (chapter_id.equals(ChapterId)) {
-//                        url = chapter_url;
-//                        vid = chapter_vid;
-////                                              }
-////                                          }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-
-
-                //END FROM LEARN????
-
-
                 Intent Learn =new Intent(context, com.example.pokelearn.Activities.Learn.class);
                 Learn.putExtra("ChapterId", chapterId.get(position));
                 Learn.putExtra("CourseId", courseId);
-//                Learn.putExtra("Url", url);
-//                Learn.putExtra("Vid", vid);
                 context.startActivity(Learn);
                 Log.d("ERROR 1: ", chapterId.get(position));
             }

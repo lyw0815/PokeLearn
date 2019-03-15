@@ -10,12 +10,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.pokelearn.Fragment.Description;
 import com.example.pokelearn.Fragment.Notes;
 import com.example.pokelearn.Fragment.Video;
 import com.example.pokelearn.R;
@@ -27,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Learn extends AppCompatActivity  {
 
-    private String url, vid;
+    private String url, vid, desc;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
@@ -44,7 +48,6 @@ public class Learn extends AppCompatActivity  {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.learnToolbar);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("Learn");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -56,9 +59,13 @@ public class Learn extends AppCompatActivity  {
 
                                               String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
                                               String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
+                                              String chapter_desc = dataSnapshot.child("chapterDesc").getValue(String.class);
                                               String chapter_title = dataSnapshot.child("chapterTitle").getValue(String.class);
                                                   url = chapter_url;
                                                   vid = chapter_vid;
+                                                  desc = chapter_desc;
+                                          Log.d("url",url);
+                                          Log.e("desc",desc);
                                                   getSupportActionBar().setTitle(chapter_title);
                                                   callTab();
                                       }
@@ -134,13 +141,19 @@ public class Learn extends AppCompatActivity  {
             Fragment fragment = null;
 
             switch (position) {
-                case 0:
+                case 0 :
+                    fragment = new Description();
+                    Bundle bundleDesc = new Bundle();
+                    bundleDesc.putString("Desc", desc);
+                    fragment.setArguments(bundleDesc);
+                    break;
+                case 1:
                     fragment = new Notes();
                     Bundle bundleNotes = new Bundle();
                     bundleNotes.putString("Url",url);
                     fragment.setArguments(bundleNotes);
                     break;
-                case 1:
+                case 2:
                     fragment = new Video();
                     Bundle bundleVideo = new Bundle();
                     bundleVideo.putString("Vid", vid);
@@ -152,15 +165,17 @@ public class Learn extends AppCompatActivity  {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Notes";
+                    return "Description";
                 case 1:
+                    return "Notes";
+                case 2:
                     return "Video";
             }
             return null;
