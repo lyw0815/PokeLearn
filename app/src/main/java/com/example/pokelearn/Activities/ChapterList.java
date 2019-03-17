@@ -28,6 +28,7 @@ public class ChapterList extends AppCompatActivity {
     Button btnEnrol;
     SearchChapterAdapter SearchChapterAdapter;
     ArrayList<String> chapterList;
+    ArrayList<String> chapterIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class ChapterList extends AppCompatActivity {
                     String chapter_title = snapshot.child("chapterTitle").getValue(String.class);
                     String chapter_id = snapshot.child("chapterId").getValue(String.class);
 
-//                    if (chapter_course.equals(CourseName))
                         chapterList.add(chapter_title);
             }
                 SearchChapterAdapter = new SearchChapterAdapter(ChapterList.this, chapterList, CourseName);

@@ -28,12 +28,10 @@ public class I_ChapterList extends AppCompatActivity {
 
     TextView courseName;
     Button btnAddChapter;
-
     RecyclerView chapterLists;
-    DatabaseReference dbReference;
     I_ChapterAdapter IChapterAdapter;
-
     ArrayList<String> chapterList;
+    ArrayList<String> chapterIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +42,10 @@ public class I_ChapterList extends AppCompatActivity {
         final String CourseName = i.getStringExtra("CourseName");
         Intent j = getIntent();
         final String CourseId = i.getStringExtra("CourseId");
-       // courseName.setText(CourseName);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.iChapterListToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle(CourseName); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.iChapterListToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(CourseName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         courseName = (TextView) findViewById(R.id.i_chapListCourseName);
@@ -74,16 +71,17 @@ public class I_ChapterList extends AppCompatActivity {
         chapterLists.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
         chapterList = new ArrayList<>();
+        chapterIds = new ArrayList<>();
 
         setAdapter(CourseName, CourseId);
 
     }
 
     private void setAdapter(final String CourseName, final String CourseId) {
-//        dbReference = FirebaseDatabase.getInstance().getReference("Chapters");
+
         Query query = FirebaseDatabase.getInstance().getReference("Chapters").child(CourseId).orderByChild("chapterSequence");
 
-//        dbReference.child("Chapters").addListenerForSingleValueEvent(new ValueEventListener() {
+
          query.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -91,16 +89,15 @@ public class I_ChapterList extends AppCompatActivity {
 
                 int counter = 0;
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                    String cid = snapshot.getKey();
 
                     String chapter_title = snapshot.child("chapterTitle").getValue(String.class);
+                    String chapter_course = snapshot.child("chapterCourse").getValue(String.class);
                     String chapter_id = snapshot.child("chapterId").getValue(String.class);
 
-//                    if (chapter_course.equals(CourseName))
-//                    if (chapter_id.equals(CourseId))
                         chapterList.add(chapter_title);
+                        chapterIds.add(chapter_id);
                 }
-                IChapterAdapter = new I_ChapterAdapter(I_ChapterList.this, chapterList, CourseName);
+                IChapterAdapter = new I_ChapterAdapter(I_ChapterList.this, chapterList, chapterIds, CourseName, CourseId);
                 chapterLists.setAdapter(IChapterAdapter);
             }
 

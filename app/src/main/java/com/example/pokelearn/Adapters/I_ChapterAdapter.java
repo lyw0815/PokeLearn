@@ -3,16 +3,13 @@ package com.example.pokelearn.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.example.pokelearn.Activities.I_ChapterList;
+import com.example.pokelearn.Activities.I_ChapterDetails;
 import com.example.pokelearn.R;
 
 import java.util.ArrayList;
@@ -21,6 +18,8 @@ public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.Chap
 
     Context context;
     ArrayList<String> chapterList;
+    ArrayList<String> chapterId;
+    String courseId;
     String courseName;
 
 
@@ -36,10 +35,12 @@ public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.Chap
     }
 
 
-    public I_ChapterAdapter(Context context, ArrayList<String> chapterList, String courseName){
+    public I_ChapterAdapter(Context context, ArrayList<String> chapterList,ArrayList<String> chapterId, String courseName, String courseId){
         this.context = context;
         this.chapterList = chapterList;
+        this.chapterId = chapterId;
         this.courseName = courseName;
+        this.courseId = courseId;
     }
 
     @Override
@@ -59,9 +60,10 @@ public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.Chap
 //                Toast.makeText(context, "clicked: "+ chapterList.get(position),Toast.LENGTH_LONG).show();
 
                 Intent I_ChapterDetails =new Intent(context, com.example.pokelearn.Activities.I_ChapterDetails.class);
-                I_ChapterDetails.putExtra("ChapterSeq", chapterList.get(position));
-                I_ChapterDetails.putExtra("CourseName", courseName);
+                I_ChapterDetails.putExtra("ChapterId", chapterId.get(position));
+                I_ChapterDetails.putExtra("CourseId", courseId);
                 context.startActivity(I_ChapterDetails);
+                Log.d("ERROR 1: ", chapterId.get(position));
 
             }
         });

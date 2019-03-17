@@ -28,8 +28,6 @@ public class S_ChapterAdapter extends RecyclerView.Adapter<S_ChapterAdapter.Chap
     ArrayList<String> chapterId;
     String courseName;
     String courseId;
-    String url, vid;
-
 
     class ChapterViewHolder extends RecyclerView.ViewHolder{
         TextView chapter_title;

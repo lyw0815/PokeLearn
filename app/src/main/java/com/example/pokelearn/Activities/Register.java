@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,13 +48,15 @@ public class Register extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.registerToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Sign Up");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         databaseUsers = FirebaseDatabase.getInstance().getReference("Users");
@@ -81,8 +84,18 @@ public class Register extends AppCompatActivity {
                 final String password2 = userPassword2.getText().toString();
                 final String name = userName.getText().toString();
 
-                if(email.isEmpty() || name.isEmpty() || password.isEmpty() || !password.equals(password2)){
+                if(email.isEmpty() || name.isEmpty() || password.isEmpty()){
                     showMessage("Please Fill in all fields");
+                    regBtn.setVisibility(View.VISIBLE);
+                    loadingProgress.setVisibility(View.INVISIBLE);
+                }
+                else if(!password.equals(password2)){
+                    showMessage("Password must be same");
+                    regBtn.setVisibility(View.VISIBLE);
+                    loadingProgress.setVisibility(View.INVISIBLE);
+                }
+                else if(pickedImgUri == null){
+                    showMessage("Please choose a profile picture");
                     regBtn.setVisibility(View.VISIBLE);
                     loadingProgress.setVisibility(View.INVISIBLE);
                 }
@@ -128,7 +141,6 @@ public class Register extends AppCompatActivity {
 
                             //add to Users database tree
                             String id = databaseUsers.push().getKey();
-
                             Users users = new Users(id, name, email, password);
                             databaseUsers.child(id).setValue(users);
                         }
@@ -140,13 +152,6 @@ public class Register extends AppCompatActivity {
                         }
                     }
                 });
-
-        //add user to Users Database
-
-
-
-
-
         
     }
 
@@ -164,7 +169,6 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         //url contain user image url
-
                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(name)
                                 .setPhotoUri(uri)
@@ -181,7 +185,6 @@ public class Register extends AppCompatActivity {
                                         }
                                     }
                                 });
-
                     }
                 });
             }
@@ -195,13 +198,11 @@ public class Register extends AppCompatActivity {
     }
 
     private void showMessage(String message) {
-
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     private void openGallery() {
         //open gallery intent and wait for user to pick an image
-
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent,REQUESCODE);

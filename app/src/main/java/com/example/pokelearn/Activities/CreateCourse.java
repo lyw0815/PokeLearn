@@ -92,9 +92,16 @@ public class CreateCourse extends AppCompatActivity {
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
                 createCourseBtn.setVisibility(View.INVISIBLE);
-                if (uploadTask != null && uploadTask.isInProgress()) {
+
+                if (pickedImgUri == null){
+                    progressBar.setVisibility(View.INVISIBLE);
+                    createCourseBtn.setVisibility(View.VISIBLE);
+                    Toast.makeText(CreateCourse.this, "Please choose a cover image", Toast.LENGTH_LONG).show();
+                }
+                else if (uploadTask != null && uploadTask.isInProgress()) {
                     Toast.makeText(CreateCourse.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else {
                     createCourse();
                 }
             }
@@ -209,13 +216,17 @@ public class CreateCourse extends AppCompatActivity {
                     });
 
         }else if (name.isEmpty() && desc.isEmpty()){
+            progressBar.setVisibility(View.INVISIBLE);
+            createCourseBtn.setVisibility(View.VISIBLE);
             Toast.makeText(this,"Please fill up the fields", Toast.LENGTH_LONG).show();
         }else if (name.isEmpty()){
+            progressBar.setVisibility(View.INVISIBLE);
+            createCourseBtn.setVisibility(View.VISIBLE);
             Toast.makeText(this,"Please enter course name", Toast.LENGTH_LONG).show();
         }else if (desc.isEmpty()) {
+            progressBar.setVisibility(View.INVISIBLE);
+            createCourseBtn.setVisibility(View.VISIBLE);
             Toast.makeText(this,"Please enter course description", Toast.LENGTH_LONG).show();
-        }else {
-            Toast.makeText(this,"Please select a cover image for this course", Toast.LENGTH_LONG).show();
         }
     }
 

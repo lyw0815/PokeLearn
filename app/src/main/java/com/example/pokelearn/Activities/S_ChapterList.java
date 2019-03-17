@@ -27,7 +27,6 @@ public class S_ChapterList extends AppCompatActivity {
 
     TextView courseName;
     RecyclerView chapterLists;
-    DatabaseReference dbReference;
     S_ChapterAdapter SChapterAdapter;
     ArrayList<String> chapterList;
     ArrayList<String> chapterIds;
@@ -42,12 +41,11 @@ public class S_ChapterList extends AppCompatActivity {
         final String CourseName = i.getStringExtra("CourseName");
         Intent j = getIntent();
         final String CourseId = j.getStringExtra("CourseId");
+//        Toast.makeText(getApplicationContext(), "clicked: "+ CourseId,Toast.LENGTH_LONG).show();
 
-        Toast.makeText(getApplicationContext(), "clicked: "+ CourseId,Toast.LENGTH_LONG).show();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sChapterListToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle(CourseName); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.sChapterListToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(CourseName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         courseName = (TextView) findViewById(R.id.s_chapListCourseName);
@@ -66,8 +64,6 @@ public class S_ChapterList extends AppCompatActivity {
 
     private void setAdapter(final String CourseName, final String CourseId) {
 
-//        Toast.makeText(getApplicationContext(), "query "+ CourseId,Toast.LENGTH_SHORT).show();
-
         Query query = FirebaseDatabase.getInstance().getReference("Chapters").child(CourseId).orderByChild("chapterSequence");
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -82,8 +78,6 @@ public class S_ChapterList extends AppCompatActivity {
                     String chapter_course = snapshot.child("chapterCourse").getValue(String.class);
                     String chapter_id = snapshot.child("chapterId").getValue(String.class);
 
-//                    if (chapter_course.equals(CourseName))
-//                    if (chapter_course.equals(CourseName))
                         chapterList.add(chapter_title);
                         chapterIds.add(chapter_id);
                 }

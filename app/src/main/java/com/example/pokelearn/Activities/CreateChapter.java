@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class CreateChapter extends AppCompatActivity {
     Button btnChooseFile;
     Uri pdfUri;
     ProgressDialog progressDialog;
+    ProgressBar createChapProgress;
     private StorageTask uploadTask;
 
     static int PReqCode = 1;
@@ -64,8 +66,8 @@ public class CreateChapter extends AppCompatActivity {
         Intent j = getIntent();
         final String CourseId = j.getStringExtra("CourseId");
 
-        Toast.makeText(CreateChapter.this, CourseId, Toast.LENGTH_SHORT).show();
-        Log.d("ERROR 2: ", CourseName);
+//        Toast.makeText(CreateChapter.this, CourseId, Toast.LENGTH_SHORT).show();
+//        Log.d("ERROR 2: ", CourseName);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.createChapterToolbar);
         setSupportActionBar(toolbar);
@@ -80,6 +82,10 @@ public class CreateChapter extends AppCompatActivity {
         btnBack = (Button) findViewById(R.id.btnBack);
         btnChooseFile = (Button) findViewById(R.id.btnChooseFile);
         btnPublishChapter = (Button) findViewById(R.id.btnPublishChapter);
+        createChapProgress = (ProgressBar) findViewById(R.id.createChapProgress);
+
+        btnPublishChapter.setVisibility(View.VISIBLE);
+        createChapProgress.setVisibility(View.INVISIBLE);
 
 
         btnChooseFile.setOnClickListener(new View.OnClickListener() {
@@ -108,24 +114,30 @@ public class CreateChapter extends AppCompatActivity {
         btnPublishChapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (pdfUri != null)
-                    PublishChapter(CourseName, CourseId);
-                else
+                final String title = chapterTitle.getText().toString().trim();
+
+                String seq = chapterSeq.getText().toString().trim();
+
+                String desc = chapterDesc.getText().toString().trim();
+
+                String youtubeUrl = youTubeUrl.getText().toString().trim();
+                String youtubeVideoId = youtubeUrl.substring(youtubeUrl.lastIndexOf("/") +1);
+
+                if (pdfUri != null && !title.isEmpty() && !seq.isEmpty() && !desc.isEmpty()) {
+                    Double sequence = Double.parseDouble(seq);
+                    PublishChapter(CourseName, CourseId, title, sequence, desc, youtubeVideoId);
+                }
+                else if (pdfUri == null)
                     Toast.makeText(CreateChapter.this, "Select a File", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(CreateChapter.this, "Please fill up all fields", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void PublishChapter(final String CourseName, final String CourseId) {
-        final String title = chapterTitle.getText().toString().trim();
-
-        String seq = chapterSeq.getText().toString().trim();
-        final Double sequence = Double.parseDouble(seq);
-
-        final String desc = chapterDesc.getText().toString().trim();
-
-        String youtubeUrl = youTubeUrl.getText().toString().trim();
-        final String youtubeVideoId = youtubeUrl.substring(youtubeUrl.lastIndexOf("/") +1);
+    private void PublishChapter(final String CourseName, final String CourseId, final String title, final Double sequence, final String desc, final String youtubeVideoId) {
+        btnPublishChapter.setVisibility(View.INVISIBLE);
+        createChapProgress.setVisibility(View.VISIBLE);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -135,60 +147,59 @@ public class CreateChapter extends AppCompatActivity {
 
         stReference = FirebaseStorage.getInstance().getReference("LearningMaterials");
 
+        if (!title.isEmpty() && !desc.isEmpty() && sequence != null) {
         final StorageReference fileReference = stReference.child((System.currentTimeMillis()
                 + "." + getFileExtension(pdfUri)));
 
-        uploadTask = fileReference.putFile(pdfUri);
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
+            uploadTask = fileReference.putFile(pdfUri);
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
                 }
-                return fileReference.getDownloadUrl();
-            }
-        })
+            })
 
 
-                .addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        //final String url = task.getResult().toString().trim();
-                        dbReference = FirebaseDatabase.getInstance().getReference("Chapters").child(CourseId);
-                        if (task.isSuccessful()) {
-                            String id = dbReference.push().getKey();
-                            Chapters newChapter = new Chapters(id,
-                                    CourseName,
-                                    CourseId,
-                                    title,
-                                    sequence,
-                                    desc,
-                                    task.getResult().toString().trim(),
-                                    youtubeVideoId);
+                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            //final String url = task.getResult().toString().trim();
+                            dbReference = FirebaseDatabase.getInstance().getReference("Chapters").child(CourseId);
+                            if (task.isSuccessful()) {
+                                String id = dbReference.push().getKey();
+                                Chapters newChapter = new Chapters(id,
+                                        CourseName,
+                                        CourseId,
+                                        title,
+                                        sequence,
+                                        desc,
+                                        task.getResult().toString().trim(),
+                                        youtubeVideoId);
 
-                            dbReference.child(id).setValue(newChapter);
-                            showMessage("Course created");
-                            Toast.makeText(CreateChapter.this, "File successfully uploaded", Toast.LENGTH_SHORT).show();
+                                dbReference.child(id).setValue(newChapter);
+                                Toast.makeText(CreateChapter.this, "Chapter created", Toast.LENGTH_SHORT).show();
 
-                            Intent IChapterList =new Intent(getApplicationContext(), I_ChapterList.class);
-                            IChapterList.putExtra("CourseName", CourseName );
-                            IChapterList.putExtra("CourseId", CourseId );
-                            Log.d("ERROR", CourseName);
-                            startActivity(IChapterList);
-                            finish();
+                                Intent IChapterList = new Intent(getApplicationContext(), I_ChapterList.class);
+                                IChapterList.putExtra("CourseName", CourseName);
+                                IChapterList.putExtra("CourseId", CourseId);
+                                Log.d("ERROR", CourseName);
+                                startActivity(IChapterList);
+                                finish();
+                            } else
+                                Toast.makeText(CreateChapter.this, "File not successfully uploaded", Toast.LENGTH_SHORT).show();
+
                         }
-
-                        else
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
                             Toast.makeText(CreateChapter.this, "File not successfully uploaded", Toast.LENGTH_SHORT).show();
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CreateChapter.this, "File not successfully uploaded", Toast.LENGTH_SHORT).show();
-
-            }
-        });
+                        }
+                    });
+        }
     }
 
     private void selectPdf() {

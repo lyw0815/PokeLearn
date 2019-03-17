@@ -165,7 +165,7 @@
         android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/reg_btn_style"
@@ -173,25 +173,22 @@
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.647"
+        app:layout_constraintHorizontal_bias="0.329"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
         app:layout_constraintTop_toBottomOf="@+id/youTubeUrl"
-        app:layout_constraintVertical_bias="0.866" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/signup_btn_style"
         android:text="Back"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/youTubeUrl"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintTop_toBottomOf="@+id/youTubeUrl" />
 
     <TextView
         android:id="@+id/fileNameTxtView"
@@ -218,5 +215,14 @@
         app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ProgressBar
+        android:id="@+id/createChapProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/btnPublishChapter"
+        app:layout_constraintStart_toStartOf="@+id/btnPublishChapter"
+        app:layout_constraintTop_toTopOf="@+id/btnPublishChapter" />
 
 </android.support.constraint.ConstraintLayout>

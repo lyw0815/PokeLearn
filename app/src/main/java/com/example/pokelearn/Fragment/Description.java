@@ -34,7 +34,7 @@ public class Description extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_description, container, false);
 
-        TextView description = (TextView) v.findViewById(R.id.chapterDesc);
+        TextView description = (TextView) v.findViewById(R.id.desc_field);
 
         description.setText(desc);
 
