@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.pokelearn.Fragment.Description;
@@ -37,6 +39,9 @@ public class I_ChapterDetails extends AppCompatActivity {
     private String url, vid, desc;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    FloatingActionButton fab_more, fab_edit, fab_delete;
+    Animation FabOpen, FabClose, FabClockwise, Fabanticlockwise;
+    boolean isOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,35 @@ public class I_ChapterDetails extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.chapterDetailsToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        fab_more = (FloatingActionButton)findViewById(R.id.fab_more);
+        fab_edit = (FloatingActionButton)findViewById(R.id.fab_edit);
+        fab_delete = (FloatingActionButton)findViewById(R.id.fab_delete);
+        FabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
+        FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        FabClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
+        Fabanticlockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+        fab_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isOpen){
+                    fab_edit.startAnimation(FabClose);
+                    fab_delete.startAnimation(FabClose);
+                    fab_more.startAnimation(Fabanticlockwise);
+                    fab_delete.setClickable(false);
+                    fab_edit.setClickable(false);
+                    isOpen = false;
+                }
+                else{
+                    fab_edit.startAnimation(FabOpen);
+                    fab_delete.startAnimation(FabOpen);
+                    fab_more.startAnimation(FabClockwise);
+                    fab_edit.setClickable(true);
+                    fab_delete.setClickable(true);
+                    isOpen = true;
+                }
+            }
+        });
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
@@ -93,14 +127,14 @@ public class I_ChapterDetails extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
     }
 
