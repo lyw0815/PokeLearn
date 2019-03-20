@@ -34,11 +34,13 @@ public class Notes extends Fragment {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
 
-        try {
-            pdfUrl= URLEncoder.encode(pdfUrl,"UTF-8");
-            webView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdfUrl);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if (pdfUrl !=null) {
+            try {
+                pdfUrl = URLEncoder.encode(pdfUrl, "UTF-8");
+                webView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdfUrl);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         return v;
     }

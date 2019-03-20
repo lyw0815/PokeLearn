@@ -25,7 +25,6 @@ public class Description extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         desc = getArguments().getString("Desc");
-        Log.e("Description frag ",desc);
     }
 
     @Override

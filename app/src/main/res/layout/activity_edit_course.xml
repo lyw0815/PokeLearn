@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.CreateCourse">
+    tools:context=".Activities.EditCourse">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/iCreateCourseToolbar"
+        android:id="@+id/editCourseToolbar"
         android:layout_width="424dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -19,7 +19,7 @@
     </android.support.v7.widget.Toolbar>
 
     <Button
-        android:id="@+id/createCourseBtn"
+        android:id="@+id/editCourseBtn"
         android:layout_width="164dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -27,17 +27,17 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/reg_btn_style"
-        android:text="Create Now"
+        android:text="Update"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseDesc"
+        app:layout_constraintTop_toBottomOf="@+id/editCourseDesc"
         app:layout_constraintVertical_bias="0.342" />
 
     <Button
-        android:id="@+id/selectCoverImageBtn"
+        android:id="@+id/selectCoverImageBtn_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -47,21 +47,21 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseCoverImage" />
+        app:layout_constraintTop_toBottomOf="@+id/courseCoverImage_1" />
 
     <ProgressBar
-        android:id="@+id/createCourseProgressBar"
+        android:id="@+id/editCourseProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="58dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/selectCoverImageBtn"
-        app:layout_constraintBottom_toBottomOf="@+id/createCourseBtn"
-        app:layout_constraintEnd_toEndOf="@+id/createCourseBtn"
-        app:layout_constraintStart_toStartOf="@+id/createCourseBtn"
-        app:layout_constraintTop_toTopOf="@+id/createCourseBtn" />
+        app:layout_constraintBottom_toBottomOf="@+id/editCourseBtn"
+        app:layout_constraintEnd_toEndOf="@+id/editCourseBtn"
+        app:layout_constraintStart_toStartOf="@+id/editCourseBtn"
+        app:layout_constraintTop_toTopOf="@+id/editCourseBtn" />
 
     <EditText
-        android:id="@+id/courseName"
+        android:id="@+id/editCourseName"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -72,10 +72,10 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectCoverImageBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/selectCoverImageBtn_1" />
 
     <EditText
-        android:id="@+id/courseDesc"
+        android:id="@+id/editCourseDesc"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -89,11 +89,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseName" />
+        app:layout_constraintTop_toBottomOf="@+id/editCourseName" />
 
 
     <ImageView
-        android:id="@+id/courseCoverImage"
+        android:id="@+id/courseCoverImage_1"
         android:layout_width="414dp"
         android:layout_height="203dp"
         android:layout_marginStart="8dp"
@@ -103,6 +103,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iCreateCourseToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/editCourseToolbar" />
 
 </android.support.constraint.ConstraintLayout>

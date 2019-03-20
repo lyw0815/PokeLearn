@@ -1,5 +1,6 @@
 package com.example.pokelearn.Activities;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,10 +35,14 @@ public class I_MyCourse extends AppCompatActivity {
     ArrayList<String> courseDescList;
     ArrayList<String> courseCoverImgList;
 
+    public static Activity iMyCourse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_i__my_course);
+
+        iMyCourse = this;
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();

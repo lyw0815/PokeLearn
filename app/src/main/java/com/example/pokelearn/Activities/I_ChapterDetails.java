@@ -107,9 +107,10 @@ public class I_ChapterDetails extends AppCompatActivity {
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent EditChapter =new Intent(getApplicationContext(), EditChapter.class);
+                Intent EditChapter = new Intent(getApplicationContext(), EditChapter.class);
                 EditChapter.putExtra("ChapterId", ChapterId );
                 EditChapter.putExtra("CourseId", CourseId );
+                EditChapter.putExtra("CourseName", CourseName );
                 startActivity(EditChapter);
                 finish();
             }
@@ -137,8 +138,6 @@ public class I_ChapterDetails extends AppCompatActivity {
                     url = chapter_url;
                     vid = chapter_vid;
                     desc = chapter_desc;
-//                    Log.d("url", url);
-//                    Log.e("desc", desc);
                     getSupportActionBar().setTitle(chapter_title);
                     callTab();
                 }
@@ -189,7 +188,7 @@ public class I_ChapterDetails extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
         ref.removeValue();
-        Toast.makeText(this, "Chapter delete successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Chapter deleted successfully", Toast.LENGTH_SHORT).show();
         del_flag = true;
         deleteDialog.dismiss();
         I_ChapterList.iChapterList.finish();

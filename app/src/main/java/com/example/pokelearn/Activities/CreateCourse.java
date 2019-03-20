@@ -65,12 +65,12 @@ public class CreateCourse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_course);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.iCreateCourseToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle("Create Course"); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.iCreateCourseToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Create Course");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //ini
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
