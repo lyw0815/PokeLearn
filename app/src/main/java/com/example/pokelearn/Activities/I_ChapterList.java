@@ -1,5 +1,6 @@
 package com.example.pokelearn.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -32,11 +33,14 @@ public class I_ChapterList extends AppCompatActivity {
     I_ChapterAdapter IChapterAdapter;
     ArrayList<String> chapterList;
     ArrayList<String> chapterIds;
+    public static Activity iChapterList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_i__chapter_list);
+
+        iChapterList = this;
 
         Intent i = getIntent();
         final String CourseName = i.getStringExtra("CourseName");

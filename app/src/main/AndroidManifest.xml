@@ -13,14 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_pokelearn_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.UpdateProfile"
-            android:parentActivityName=".Activities.HomeActivity"></activity>
-        <activity android:name=".Activities.UpdatePassword"
-            android:parentActivityName=".Activities.HomeActivity"/>
+        <activity android:name=".Activities.EditChapter"></activity>
+        <activity
+            android:name=".Activities.UpdateProfile"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.UpdatePassword"
+            android:parentActivityName=".Activities.HomeActivity" />
         <activity
             android:name=".Activities.I_ChapterDetails"
-            android:parentActivityName=".Activities.HomeActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".Activities.HomeActivity" />
         <activity
             android:name=".Activities.ChapterList"
             android:parentActivityName=".Activities.HomeActivity"

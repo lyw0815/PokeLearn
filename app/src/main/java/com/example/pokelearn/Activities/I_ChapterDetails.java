@@ -1,6 +1,10 @@
 package com.example.pokelearn.Activities;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,7 +26,10 @@ import android.view.ViewGroup;
 
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pokelearn.Fragment.Description;
 import com.example.pokelearn.Fragment.Notes;
@@ -41,7 +48,12 @@ public class I_ChapterDetails extends AppCompatActivity {
     private ViewPager mViewPager;
     FloatingActionButton fab_more, fab_edit, fab_delete;
     Animation FabOpen, FabClose, FabClockwise, Fabanticlockwise;
+    Dialog deleteDialog;
+    Button deleteYes, deleteNo;
+    ImageView closePopupImg;
+    TextView titlePopUp, messagePopUp;
     boolean isOpen = false;
+    boolean del_flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +63,9 @@ public class I_ChapterDetails extends AppCompatActivity {
         Intent i = getIntent();
         final String ChapterId = i.getStringExtra("ChapterId");
         Intent j = getIntent();
-        final String CourseId = i.getStringExtra("CourseId");
+        final String CourseId = j.getStringExtra("CourseId");
+        Intent k = getIntent();
+        final String CourseName = k.getStringExtra("CourseName");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.chapterDetailsToolbar);
         setSupportActionBar(toolbar);
@@ -64,6 +78,10 @@ public class I_ChapterDetails extends AppCompatActivity {
         FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         FabClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
         Fabanticlockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+
+        deleteDialog = new Dialog(this);
+        del_flag = false;
+
         fab_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,35 +104,101 @@ public class I_ChapterDetails extends AppCompatActivity {
             }
         });
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
-
-        ref.addValueEventListener(new ValueEventListener() {
+        fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
-                String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
-                String chapter_desc = dataSnapshot.child("chapterDesc").getValue(String.class);
-                String chapter_title = dataSnapshot.child("chapterTitle").getValue(String.class);
-                url = chapter_url;
-                vid = chapter_vid;
-                desc = chapter_desc;
-                Log.d("url", url);
-                Log.e("desc", desc);
-                getSupportActionBar().setTitle(chapter_title);
-                callTab();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onClick(View view) {
+                Intent EditChapter =new Intent(getApplicationContext(), EditChapter.class);
+                EditChapter.putExtra("ChapterId", ChapterId );
+                EditChapter.putExtra("CourseId", CourseId );
+                startActivity(EditChapter);
+                finish();
             }
         });
 
+        fab_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShowDeletePopup(ChapterId, CourseId, CourseName);
+            }
+        });
+
+        if (del_flag == false) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    String chapter_url = dataSnapshot.child("chapterMaterialUrl").getValue(String.class);
+                    String chapter_vid = dataSnapshot.child("chapterYoutubeVideoId").getValue(String.class);
+                    String chapter_desc = dataSnapshot.child("chapterDesc").getValue(String.class);
+                    String chapter_title = dataSnapshot.child("chapterTitle").getValue(String.class);
+                    url = chapter_url;
+                    vid = chapter_vid;
+                    desc = chapter_desc;
+//                    Log.d("url", url);
+//                    Log.e("desc", desc);
+                    getSupportActionBar().setTitle(chapter_title);
+                    callTab();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
+        }
+    }
+
+    public void ShowDeletePopup(final String chapter_id, final String course_id, final String course_name){
+        deleteDialog.setContentView(R.layout.pop_up_dialog);
+        closePopupImg = (ImageView) deleteDialog.findViewById(R.id.closePopUpImg);
+        deleteYes = (Button) deleteDialog.findViewById(R.id.btnDeleteYes);
+        deleteNo = (Button) deleteDialog.findViewById(R.id.btnDeleteNo);
+        titlePopUp = (TextView) deleteDialog.findViewById(R.id.titlePopUp);
+        messagePopUp = (TextView) deleteDialog.findViewById(R.id.messagePopUp);
+
+        closePopupImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteDialog.dismiss();
+            }
+        });
+
+        deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        deleteDialog.show();
+
+        deleteYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteChapter(chapter_id, course_id, course_name);
+            }
+        });
+
+        deleteNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteDialog.dismiss();
+            }
+        });
 
     }
 
-
+    private void deleteChapter(String ChapterId, String CourseId, String CourseName) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
+        ref.removeValue();
+        Toast.makeText(this, "Chapter delete successfully", Toast.LENGTH_SHORT).show();
+        del_flag = true;
+        deleteDialog.dismiss();
+        I_ChapterList.iChapterList.finish();
+        Intent I_ChapterList =new Intent(getApplicationContext(), I_ChapterList.class);
+        I_ChapterList.putExtra("CourseName", CourseName );
+        I_ChapterList.putExtra("CourseId", CourseId );
+        startActivity(I_ChapterList);
+        finish();
+    }
 
     public void callTab() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -126,30 +210,18 @@ public class I_ChapterDetails extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
     }
 
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_i__chapter_details, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
@@ -162,7 +234,6 @@ public class I_ChapterDetails extends AppCompatActivity {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
         public PlaceholderFragment() { }
-
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();

@@ -61,6 +61,7 @@ public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.Chap
 
                 Intent I_ChapterDetails =new Intent(context, com.example.pokelearn.Activities.I_ChapterDetails.class);
                 I_ChapterDetails.putExtra("ChapterId", chapterId.get(position));
+                I_ChapterDetails.putExtra("CourseName", courseName);
                 I_ChapterDetails.putExtra("CourseId", courseId);
                 context.startActivity(I_ChapterDetails);
                 Log.d("ERROR 1: ", chapterId.get(position));
