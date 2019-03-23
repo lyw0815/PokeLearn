@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_pokelearn_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.EditCourse"
-            android:parentActivityName=".Activities.HomeActivity"></activity>
+        <activity
+            android:name=".Activities.EditCourse"
+            android:parentActivityName=".Activities.HomeActivity" />
         <activity
             android:name=".Activities.EditChapter"
             android:parentActivityName=".Activities.I_ChapterDetails" />

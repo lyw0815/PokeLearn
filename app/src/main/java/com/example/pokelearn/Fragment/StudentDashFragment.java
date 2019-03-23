@@ -10,12 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pokelearn.Activities.CreateCourse;
 import com.example.pokelearn.Activities.Discuss;
 import com.example.pokelearn.Activities.Home;
-import com.example.pokelearn.Activities.I_MyCourse;
-import com.example.pokelearn.Activities.I_Progress;
-import com.example.pokelearn.Activities.Learn;
 import com.example.pokelearn.Activities.Quiz;
 import com.example.pokelearn.Activities.S_MyCourse;
 import com.example.pokelearn.Activities.S_Progress;

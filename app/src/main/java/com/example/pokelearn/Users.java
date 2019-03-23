@@ -5,18 +5,18 @@ public class Users {
     String userName;
     String userEmail;
     String userPassword;
-    //String userImgUrl;
+    String userImgUrl;
 
     public Users(){
 
     }
 
-    public Users(String userId, String userName, String userEmail, String userPassword /*String userImgUrl*/) {
+    public Users(String userId, String userName, String userEmail, String userPassword, String userImgUrl) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-      //  this.userImgUrl = userImgUrl;
+        this.userImgUrl = userImgUrl;
     }
 
     public String getUserId() {
@@ -35,7 +35,5 @@ public class Users {
         return userPassword;
     }
 
-    //public String getUserImgUrl() {
-    //    return userImgUrl;
-    //}
+    public String getUserImgUrl() { return userImgUrl;}
 }

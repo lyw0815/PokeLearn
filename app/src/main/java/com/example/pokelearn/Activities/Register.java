@@ -137,12 +137,14 @@ public class Register extends AppCompatActivity {
                             //user account created successfully
                             showMessage("Account created");
                             //update profile picture and name
-                            updateUserInfo(name,pickedImgUri, mAuth.getCurrentUser());
+                            updateUserInfo(name, pickedImgUri, mAuth.getCurrentUser(), email, password);
 
                             //add to Users database tree
-                            String id = databaseUsers.push().getKey();
-                            Users users = new Users(id, name, email, password);
-                            databaseUsers.child(id).setValue(users);
+//                            String id = databaseUsers.push().getKey();
+//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                            String id = user.getUid();
+//                            Users users = new Users(id, name, email, password);
+//                            databaseUsers.child(id).setValue(users);
                         }
                         else{
                             //account creation failed
@@ -155,7 +157,7 @@ public class Register extends AppCompatActivity {
         
     }
 
-    private void updateUserInfo(final String name, Uri pickedImgUri, final FirebaseUser currentUser) {
+    private void updateUserInfo(final String name, Uri pickedImgUri, final FirebaseUser currentUser, final String email, final String password) {
         //update user photo and name
         // upload user photo to firebase storage and get url
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("UsersPhoto");
@@ -180,11 +182,18 @@ public class Register extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
                                             //user info updated successfully
+                                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                            String url = user.getPhotoUrl().toString();
+                                            String id = user.getUid();
+                                            Users users = new Users(id, name, email, password, url);
+                                            databaseUsers.child(id).setValue(users);
+
                                             showMessage("Register Complete");
                                             updateUI();
                                         }
                                     }
                                 });
+
                     }
                 });
             }
