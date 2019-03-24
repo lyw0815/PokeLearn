@@ -43,7 +43,7 @@ public class Learn extends AppCompatActivity  {
         Intent i = getIntent();
         final String ChapterId = i.getStringExtra("ChapterId");
         Intent j = getIntent();
-        final String CourseId = i.getStringExtra("CourseId");
+        final String CourseId = j.getStringExtra("CourseId");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.learnToolbar);
         setSupportActionBar(toolbar);

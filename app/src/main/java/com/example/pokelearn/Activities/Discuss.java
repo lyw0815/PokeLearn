@@ -1,5 +1,6 @@
 package com.example.pokelearn.Activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,10 @@ public class Discuss extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super .onOptionsItemSelected(item);
 
+        if (item.getItemId() == R.id.allUserBtn){
+            Intent UserList = new Intent(getApplicationContext(), com.example.pokelearn.Activities.UserList.class);
+            startActivity(UserList);
+        }
         return true;
     }
 }

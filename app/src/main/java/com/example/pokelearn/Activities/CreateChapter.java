@@ -66,9 +66,6 @@ public class CreateChapter extends AppCompatActivity {
         Intent j = getIntent();
         final String CourseId = j.getStringExtra("CourseId");
 
-//        Toast.makeText(CreateChapter.this, CourseId, Toast.LENGTH_SHORT).show();
-//        Log.d("ERROR 2: ", CourseName);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.createChapterToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Create Chapter");
@@ -140,9 +137,10 @@ public class CreateChapter extends AppCompatActivity {
         createChapProgress.setVisibility(View.VISIBLE);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setTitle("Uploading file...");
-        progressDialog.setProgress(0);
+//        progressDialog.setProgress(0);
+        progressDialog.setMessage("Please wait while we upload and process the chapter content.");
         progressDialog.show();
 
         stReference = FirebaseStorage.getInstance().getReference("LearningMaterials");

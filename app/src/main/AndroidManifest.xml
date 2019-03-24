@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_pokelearn_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.Profile"></activity>
+        <activity
+            android:name=".Activities.UserList"
+            android:parentActivityName=".Activities.Discuss" />
         <activity
             android:name=".Activities.EditCourse"
             android:parentActivityName=".Activities.HomeActivity" />
