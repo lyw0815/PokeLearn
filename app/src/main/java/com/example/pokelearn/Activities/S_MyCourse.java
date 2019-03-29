@@ -1,5 +1,6 @@
 package com.example.pokelearn.Activities;
 
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.example.pokelearn.Adapters.I_CourseAdapter;
 import com.example.pokelearn.Adapters.S_CourseAdapter;
@@ -25,9 +27,11 @@ public class S_MyCourse extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    String uid;
 
     RecyclerView courseList;
     DatabaseReference dbReference;
+    DatabaseReference sCourseList;
     S_CourseAdapter SCourseAdapter;
 
     ArrayList<String> courseNameList;
@@ -43,6 +47,7 @@ public class S_MyCourse extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        uid = currentUser.getUid();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.sMyCourseToolbar); // get the reference of Toolbar
         setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
@@ -52,6 +57,7 @@ public class S_MyCourse extends AppCompatActivity {
         courseList = (RecyclerView) findViewById(R.id.sMyCourseRecycleView);
 
         dbReference = FirebaseDatabase.getInstance().getReference();
+        sCourseList = FirebaseDatabase.getInstance().getReference();
 
         courseList.setHasFixedSize(true);
         courseList.setLayoutManager(new LinearLayoutManager(this));
@@ -62,46 +68,84 @@ public class S_MyCourse extends AppCompatActivity {
         courseCoverImgList = new ArrayList<>();
         courseId = new ArrayList<>();
 
-        setAdapter(currentUser.getEmail());
+        setAdapter();
 
     }
 
-    private void setAdapter(final String email) {
+    private void setAdapter() {
 
-        dbReference.child("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
+        sCourseList.child("Student Course List").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                int counter = 0;
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                    String cid = snapshot.getKey();
-                    String course_name = snapshot.child("courseName").getValue(String.class);
-                    String course_id = snapshot.child("courseId").getValue(String.class);
-                    String course_desc = snapshot.child("courseDesc").getValue(String.class);
-                    String course_cvr = snapshot.child("courseCoverImgUrl").getValue(String.class);
-//                    String course_ins = snapshot.child("courseInstructorMail").getValue(String.class);
+                    final String course_id = snapshot.child("courseId").getValue(String.class);
+                    dbReference.child("Courses").child(course_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Log.e("Course: ", course_id);
+                            String course_name = dataSnapshot.child("courseName").getValue(String.class);
+                            String course_id = dataSnapshot.child("courseId").getValue(String.class);
+                            String course_desc = dataSnapshot.child("courseDesc").getValue(String.class);
+                            String course_cvr = dataSnapshot.child("courseCoverImgUrl").getValue(String.class);
 
-//                    if (course_ins.equals(email)){
-                        courseNameList.add(course_name);
-                        courseDescList.add(course_desc);
-                        courseCoverImgList.add(course_cvr);
-                        courseId.add(course_id);
-//                        counter++;
-//                    }
+                            Log.e("Course name: ", course_name);
+                            Log.e("Course desc: ", course_desc);
 
-//                    if (counter == 15){
-//                        break;
-//                    }
+                            courseNameList.add(course_name);
+                            courseDescList.add(course_desc);
+                            courseCoverImgList.add(course_cvr);
+                            courseId.add(course_id);
+
+                            Log.e("LIST", courseNameList.toString());
+                            SCourseAdapter = new S_CourseAdapter(S_MyCourse.this, courseNameList, courseDescList,courseCoverImgList, courseId);
+                            courseList.setAdapter(SCourseAdapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+
+                    });
                 }
-                SCourseAdapter = new S_CourseAdapter(S_MyCourse.this, courseNameList, courseDescList,courseCoverImgList, courseId);
-                courseList.setAdapter(SCourseAdapter);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
+
+//        dbReference.child("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+//
+//                    String course_name = snapshot.child("courseName").getValue(String.class);
+//                    String course_id = snapshot.child("courseId").getValue(String.class);
+//                    String course_desc = snapshot.child("courseDesc").getValue(String.class);
+//                    String course_cvr = snapshot.child("courseCoverImgUrl").getValue(String.class);
+//
+//
+//                    courseNameList.add(course_name);
+//                    courseDescList.add(course_desc);
+//                    courseCoverImgList.add(course_cvr);
+//                    courseId.add(course_id);
+//
+//                }
+//                SCourseAdapter = new S_CourseAdapter(S_MyCourse.this, courseNameList, courseDescList,courseCoverImgList, courseId);
+//                courseList.setAdapter(SCourseAdapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
 }

@@ -1,7 +1,9 @@
 package com.example.pokelearn.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.pokelearn.Activities.Search;
 import com.example.pokelearn.Adapters.SearchCourseAdapter;
 import com.example.pokelearn.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +51,19 @@ public class HomeFragment extends Fragment {
         currentUser = mAuth.getCurrentUser();
 
         courseList = courseView.findViewById(R.id.myRecycleView);
+
+        FloatingActionButton fab = (FloatingActionButton) courseView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                Intent searchActivity = new Intent(getContext(), Search.class);
+                startActivity(searchActivity);
+//                finish();
+            }
+        });
 
         dbReference = FirebaseDatabase.getInstance().getReference();
 

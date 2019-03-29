@@ -1,6 +1,7 @@
 package com.example.pokelearn.Activities;
 
 import android.content.Intent;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,13 +9,19 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.pokelearn.Adapters.SearchChapterAdapter;
 import com.example.pokelearn.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -29,6 +36,10 @@ public class ChapterList extends AppCompatActivity {
     SearchChapterAdapter SearchChapterAdapter;
     ArrayList<String> chapterList;
     ArrayList<String> chapterIds;
+    private DatabaseReference mSCourseDatabase;
+    private DatabaseReference mEnrolDatabase;
+    private FirebaseUser mCurrent_user;
+    public Boolean enrol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +59,53 @@ public class ChapterList extends AppCompatActivity {
         courseName = (TextView) findViewById(R.id.chapterListCourseName);
         btnEnrol = (Button) findViewById(R.id.btnEnrol);
 
+        mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
+        final String user_id = mCurrent_user.getUid();
+        enrol = false;
+        mSCourseDatabase = FirebaseDatabase.getInstance().getReference().child("Student Course List").child(user_id);
+        mEnrolDatabase = FirebaseDatabase.getInstance().getReference().child("Course Enrolment").child(CourseId);
+
+        mEnrolDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(user_id)){
+                    btnEnrol.setText("Unenrol from this course");
+                    btnEnrol.setBackground(getResources().getDrawable(R.drawable.signup_btn_style));
+                    btnEnrol.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    enrol = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         btnEnrol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //ENROL!!!!!
+                if (enrol == false) {
+                    mEnrolDatabase.child(user_id).child("studentId").setValue(user_id);
+                    mSCourseDatabase.child(CourseId).child("courseId").setValue(CourseId);
+                    Toast.makeText(ChapterList.this, "Yay, you have enrolled in this course!", Toast.LENGTH_SHORT).show();
+                    btnEnrol.setText("Unenrol from this course");
+                    btnEnrol.setBackground(getResources().getDrawable(R.drawable.signup_btn_style));
+                    btnEnrol.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    enrol = true;
+                }
+                else {
+                    mEnrolDatabase.child(user_id).removeValue();
+                    mSCourseDatabase.child(CourseId).removeValue();
+                    Toast.makeText(ChapterList.this, "You have unenrolled from this course", Toast.LENGTH_SHORT).show();
+                    btnEnrol.setText("Enrol Now !");
+                    btnEnrol.setBackground(getResources().getDrawable(R.drawable.reg_btn_style));
+                    btnEnrol.setTextColor(getResources().getColor(R.color.backgroundcolor));
+                    enrol = false;
+                }
+
             }
         });
 

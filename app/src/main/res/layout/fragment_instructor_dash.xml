@@ -189,7 +189,7 @@ android:gravity="center">
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/i_explore_card"
+            android:id="@+id/i_discuss_card"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
 
@@ -204,15 +204,15 @@ android:gravity="center">
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/circlebackgroundpurple"
-                    android:src="@drawable/ic_explore_black_24dp"
+                    android:background="@drawable/circlebackgroundviolet"
+                    android:src="@drawable/ic_forum_24dp"
                     android:padding="10dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"
-                    android:text="Explore Courses"/>
+                    android:text="Discuss"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

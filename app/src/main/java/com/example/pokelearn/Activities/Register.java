@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,7 +48,6 @@ public class Register extends AppCompatActivity {
     private ProgressBar loadingProgress;
     private Button regBtn;
     private FirebaseAuth mAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,14 +183,37 @@ public class Register extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
                                             //user info updated successfully
-                                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                            String url = user.getPhotoUrl().toString();
-                                            String id = user.getUid();
-                                            Users users = new Users(id, name, email, password, url);
-                                            databaseUsers.child(id).setValue(users);
 
-                                            showMessage("Register Complete");
-                                            updateUI();
+                                            ////// device token ////
+                                            final String current_uid = mAuth.getCurrentUser().getUid();
+                                            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                                                @Override
+                                                public void onSuccess(InstanceIdResult instanceIdResult) {
+                                                    String deviceToken = instanceIdResult.getToken();
+
+                                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                    String url = user.getPhotoUrl().toString();
+                                                    String id = user.getUid();
+                                                    Users users = new Users(id, name, email, password, url);
+                                                    databaseUsers.child(id).setValue(users);
+
+                                                    databaseUsers.child(id).child("device_token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+
+                                                            showMessage("Register Complete");
+                                                            updateUI();
+
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+
+                                            /// device token end /////
+
+
+
                                         }
                                     }
                                 });

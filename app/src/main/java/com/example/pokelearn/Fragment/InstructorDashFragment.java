@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.pokelearn.Activities.CreateCourse;
 import com.example.pokelearn.Activities.CreateQuiz;
+import com.example.pokelearn.Activities.Discuss;
 import com.example.pokelearn.Activities.Home;
 import com.example.pokelearn.Activities.I_MyCourse;
 import com.example.pokelearn.Activities.I_MyQuiz;
@@ -82,7 +83,7 @@ public class InstructorDashFragment extends Fragment implements View.OnClickList
         iMyCourseCard = (CardView) v.findViewById(R.id.i_myCourses_card);
         iCreateCourseCard = (CardView) v.findViewById(R.id.i_createNewCourse_card);
         iProgressCard = (CardView) v.findViewById(R.id.i_progress_card);
-        iExploreCard = (CardView) v.findViewById(R.id.i_explore_card);
+        iExploreCard = (CardView) v.findViewById(R.id.i_discuss_card);
         iCreateQuizCard = (CardView) v.findViewById(R.id.i_createQuiz_card);
         iMyQuizCard = (CardView) v.findViewById(R.id.i_myQuiz_card);
         //add click listener to the cards
@@ -127,10 +128,8 @@ public class InstructorDashFragment extends Fragment implements View.OnClickList
                 i = new Intent(getActivity(), CreateCourse.class );startActivity(i);  break;
             case R.id.i_progress_card:
                 i = new Intent(getActivity(), I_Progress.class );startActivity(i); break;
-            case R.id.i_explore_card:
-                ((Home) getActivity())
-                        .setActionBarTitle("Home");
-                getFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();break;
+            case R.id.i_discuss_card:
+                i = new Intent(getActivity(), Discuss.class );startActivity(i); break;
             case R.id.i_createQuiz_card:
                 i = new Intent(getActivity(), CreateQuiz.class );startActivity(i);  break;
             case R.id.i_myQuiz_card:
@@ -143,16 +142,6 @@ public class InstructorDashFragment extends Fragment implements View.OnClickList
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
