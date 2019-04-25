@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.ChapterViewHolder> {
 
     Context context;
+    String module;
     ArrayList<String> chapterList;
     ArrayList<String> chapterId;
     String courseId;
@@ -35,12 +36,13 @@ public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.Chap
     }
 
 
-    public I_ChapterAdapter(Context context, ArrayList<String> chapterList,ArrayList<String> chapterId, String courseName, String courseId){
+    public I_ChapterAdapter(Context context, ArrayList<String> chapterList,ArrayList<String> chapterId, String courseName, String courseId, String module){
         this.context = context;
         this.chapterList = chapterList;
         this.chapterId = chapterId;
         this.courseName = courseName;
         this.courseId = courseId;
+        this.module = module;
     }
 
     @Override
@@ -59,12 +61,21 @@ public class I_ChapterAdapter extends RecyclerView.Adapter<I_ChapterAdapter.Chap
             public void onClick(View view) {
 //                Toast.makeText(context, "clicked: "+ chapterList.get(position),Toast.LENGTH_LONG).show();
 
-                Intent I_ChapterDetails =new Intent(context, com.example.pokelearn.Activities.I_ChapterDetails.class);
-                I_ChapterDetails.putExtra("ChapterId", chapterId.get(position));
-                I_ChapterDetails.putExtra("CourseName", courseName);
-                I_ChapterDetails.putExtra("CourseId", courseId);
-                context.startActivity(I_ChapterDetails);
-                Log.d("ERROR 1: ", chapterId.get(position));
+                if (module.equals("details")) {
+                    Intent I_ChapterDetails = new Intent(context, com.example.pokelearn.Activities.I_ChapterDetails.class);
+                    I_ChapterDetails.putExtra("ChapterId", chapterId.get(position));
+                    I_ChapterDetails.putExtra("CourseName", courseName);
+                    I_ChapterDetails.putExtra("CourseId", courseId);
+                    context.startActivity(I_ChapterDetails);
+//                    Log.d("ERROR 1: ", chapterId.get(position));
+                }
+                else{
+                    Intent I_StudentProgress = new Intent(context, com.example.pokelearn.Activities.I_StudentProgress.class);
+                    I_StudentProgress.putExtra("ChapterId", chapterId.get(position));
+                    I_StudentProgress.putExtra("ChapterName", chapterList.get(position));
+                    I_StudentProgress.putExtra("CourseId", courseId);
+                    context.startActivity(I_StudentProgress);
+                }
 
             }
         });

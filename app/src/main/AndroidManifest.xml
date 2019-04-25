@@ -14,9 +14,44 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.Discuss"
+            android:name=".Activities.I_MyQuiz"
             android:parentActivityName=".Activities.HomeActivity"
-            android:label="@string/title_activity_discuss"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Done"
+            android:parentActivityName=".Activities.HomeActivity"></activity>
+        <activity
+            android:name=".Activities.Quiz"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.PreQuiz"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.JoinQuiz"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.CreateQuizQuestion"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.I_StudentProgress"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.I_CourseProgress"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.S_CourseProgress"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.SearchFriend"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity
+            android:name=".Activities.Chat"
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Discuss"
+            android:label="@string/title_activity_discuss"
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".FirebaseMessagingService">
             <intent-filter>
@@ -24,7 +59,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Activities.Profile">
+        <activity
+            android:name=".Activities.Profile"
+            android:parentActivityName=".Activities.HomeActivity">
             <intent-filter>
                 <action android:name="PokeLearn_TARGET_NOTIFICATION" />
 
@@ -33,22 +70,28 @@
         </activity>
         <activity
             android:name=".Activities.UserList"
-            android:parentActivityName=".Activities.Discuss" />
+            android:parentActivityName=".Activities.Discuss"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.EditCourse"
-            android:parentActivityName=".Activities.HomeActivity" />
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.EditChapter"
-            android:parentActivityName=".Activities.I_ChapterDetails" />
+            android:parentActivityName=".Activities.I_ChapterDetails"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.UpdateProfile"
-            android:parentActivityName=".Activities.HomeActivity" />
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.UpdatePassword"
-            android:parentActivityName=".Activities.HomeActivity" />
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.I_ChapterDetails"
-            android:parentActivityName=".Activities.HomeActivity" />
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.ChapterList"
             android:parentActivityName=".Activities.HomeActivity"
@@ -64,14 +107,6 @@
         <activity
             android:name=".Activities.CreateChapter"
             android:parentActivityName=".Activities.I_ChapterList"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.I_MyQuiz"
-            android:parentActivityName=".Activities.HomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.Quiz"
-            android:parentActivityName=".Activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.CreateQuiz"

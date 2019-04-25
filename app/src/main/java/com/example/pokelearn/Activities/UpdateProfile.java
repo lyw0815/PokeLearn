@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.pokelearn.Fragment.HomeFragment;
+import com.example.pokelearn.Fragment.ProfileFragment;
 import com.example.pokelearn.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +32,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,7 +49,7 @@ public class UpdateProfile extends AppCompatActivity {
     static int PReqCode = 1;
     static int REQUESCODE = 1;
     Uri pickedImgUri;
-
+    DatabaseReference userDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class UpdateProfile extends AppCompatActivity {
 
         userName.setText(user.getDisplayName());
         Glide.with(this).load(user.getPhotoUrl()).into(userProfilePic);
+
+        userDb = FirebaseDatabase.getInstance().getReference();
 
         btnChoosePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +121,8 @@ public class UpdateProfile extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
 
+                            final String ImageUrl = uri.toString();
+
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(name)
                                     .setPhotoUri(uri)
@@ -124,6 +133,8 @@ public class UpdateProfile extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                userDb.child("Users").child(user.getUid()).child("userName").setValue(name);
+                                                userDb.child("Users").child(user.getUid()).child("userImgUrl").setValue(ImageUrl);
                                                 Toast.makeText(getApplicationContext(), "Profile updated", Toast.LENGTH_LONG).show();
                                                 finish();
                                             }
@@ -146,6 +157,9 @@ public class UpdateProfile extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     public void onSuccess(Uri uri) {
+
+                        final String ImageUrl = uri.toString();
+
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setPhotoUri(uri)
                                 .build();
@@ -155,6 +169,8 @@ public class UpdateProfile extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+
+                                            userDb.child("Users").child(user.getUid()).child("userImgUrl").setValue(ImageUrl);
                                             Toast.makeText(getApplicationContext(), "Profile picture updated", Toast.LENGTH_LONG).show();
                                             finish();
                                         }
@@ -166,7 +182,7 @@ public class UpdateProfile extends AppCompatActivity {
         });
     }
 
-    private void updProfileName(String name){
+    private void updProfileName(final String name){
         btnUpdProfile.setVisibility(View.INVISIBLE);
         updProgress.setVisibility(View.VISIBLE);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -180,6 +196,7 @@ public class UpdateProfile extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            userDb.child("Users").child(user.getUid()).child("userName").setValue(name);
                             Toast.makeText(getApplicationContext(),"Username updated", Toast.LENGTH_LONG).show();
                             finish();
                         }
@@ -188,8 +205,6 @@ public class UpdateProfile extends AppCompatActivity {
     }
 
     private void openGallery() {
-        //open gallery intent and wait for user to pick an image
-
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent,REQUESCODE);
@@ -217,8 +232,6 @@ public class UpdateProfile extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null){
-            //user has successfully picked an image
-            //save reference to a Uri variable
             pickedImgUri = data.getData();
             userProfilePic.setImageURI(pickedImgUri);
         }

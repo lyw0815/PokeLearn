@@ -73,7 +73,7 @@ public class Video extends Fragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            getActivity().setTitle(view.getTitle());
+//            getActivity().setTitle(view.getTitle());
             super.onPageFinished(view, url);
         }
     }

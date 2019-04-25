@@ -22,7 +22,10 @@ import android.widget.Toast;
 import com.example.pokelearn.Fragment.Description;
 import com.example.pokelearn.Fragment.Notes;
 import com.example.pokelearn.Fragment.Video;
+import com.example.pokelearn.Progress;
 import com.example.pokelearn.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +37,8 @@ public class Learn extends AppCompatActivity  {
     private String url, vid, desc;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    DatabaseReference mProgressDatabase;
+    FirebaseUser mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,29 @@ public class Learn extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        mProgressDatabase = FirebaseDatabase.getInstance().getReference("Student Course List");
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("Chapters").child(CourseId).child(ChapterId);
+
+
+        ///// progress
+        mProgressDatabase.child(mCurrentUser.getUid()).child(CourseId).child(ChapterId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mProgressDatabase.child(mCurrentUser.getUid()).child(CourseId).child(ChapterId).child("progressChapter").setValue("true");
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ///// end progress
 
         ref.addValueEventListener(new ValueEventListener() {
                                       @Override
@@ -96,9 +122,6 @@ public class Learn extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
         return super.onOptionsItemSelected(item);
     }
 

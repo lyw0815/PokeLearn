@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class I_CourseAdapter extends RecyclerView.Adapter<I_CourseAdapter.CourseViewHolder> {
     Context context;
+    String module;
     ArrayList<String> courseNameList;
     ArrayList<String> courseIdList;
     ArrayList<String> courseDescList;
@@ -39,12 +40,14 @@ public class I_CourseAdapter extends RecyclerView.Adapter<I_CourseAdapter.Course
     }
 
 
-    public I_CourseAdapter(Context context, ArrayList<String> courseNameList, ArrayList<String>courseIdList, ArrayList<String>courseDescList, ArrayList<String>courseCoverImgList){
+    public I_CourseAdapter(Context context, ArrayList<String> courseNameList, ArrayList<String>courseIdList, ArrayList<String>courseDescList,
+                           ArrayList<String>courseCoverImgList, String module){
         this.context = context;
         this.courseNameList = courseNameList;
         this.courseIdList = courseIdList;
         this.courseDescList = courseDescList;
         this.courseCoverImgList = courseCoverImgList;
+        this.module = module;
     }
 
     @Override
@@ -65,10 +68,18 @@ public class I_CourseAdapter extends RecyclerView.Adapter<I_CourseAdapter.Course
             public void onClick(View view) {
 //                Toast.makeText(context, "clicked: "+ courseNameList.get(position),Toast.LENGTH_LONG).show();
 
-                Intent I_ChapterList =new Intent(context, I_ChapterList.class);
-                I_ChapterList.putExtra("CourseName", courseNameList.get(position));
-                I_ChapterList.putExtra("CourseId", courseIdList.get(position));
-                context.startActivity(I_ChapterList);
+                if(module.equals("myCourse")) {
+                    Intent I_ChapterList = new Intent(context, I_ChapterList.class);
+                    I_ChapterList.putExtra("CourseName", courseNameList.get(position));
+                    I_ChapterList.putExtra("CourseId", courseIdList.get(position));
+                    context.startActivity(I_ChapterList);
+                }
+                else{
+                    Intent I_CourseProgress = new Intent(context, com.example.pokelearn.Activities.I_CourseProgress.class);
+                    I_CourseProgress.putExtra("CourseId", courseIdList.get(position));
+                    I_CourseProgress.putExtra("CourseName", courseNameList.get(position));
+                    context.startActivity(I_CourseProgress);
+                }
 
             }
         });

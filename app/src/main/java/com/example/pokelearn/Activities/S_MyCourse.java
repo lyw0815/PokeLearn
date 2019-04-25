@@ -49,9 +49,9 @@ public class S_MyCourse extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         uid = currentUser.getUid();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sMyCourseToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle("My Courses"); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.sMyCourseToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Courses");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         courseList = (RecyclerView) findViewById(R.id.sMyCourseRecycleView);
@@ -79,7 +79,8 @@ public class S_MyCourse extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    final String course_id = snapshot.child("courseId").getValue(String.class);
+//                    final String course_id = snapshot.child("courseId").getValue(String.class);
+                    final String course_id = snapshot.getKey();
                     dbReference.child("Courses").child(course_id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -89,16 +90,12 @@ public class S_MyCourse extends AppCompatActivity {
                             String course_desc = dataSnapshot.child("courseDesc").getValue(String.class);
                             String course_cvr = dataSnapshot.child("courseCoverImgUrl").getValue(String.class);
 
-                            Log.e("Course name: ", course_name);
-                            Log.e("Course desc: ", course_desc);
-
                             courseNameList.add(course_name);
                             courseDescList.add(course_desc);
                             courseCoverImgList.add(course_cvr);
                             courseId.add(course_id);
 
-                            Log.e("LIST", courseNameList.toString());
-                            SCourseAdapter = new S_CourseAdapter(S_MyCourse.this, courseNameList, courseDescList,courseCoverImgList, courseId);
+                            SCourseAdapter = new S_CourseAdapter(S_MyCourse.this, courseNameList, courseDescList,courseCoverImgList, courseId, "myCourse");
                             courseList.setAdapter(SCourseAdapter);
                         }
 

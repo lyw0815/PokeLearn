@@ -47,9 +47,9 @@ public class I_MyCourse extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.iMyCourseToolbar); // get the reference of Toolbar
-        setSupportActionBar(toolbar); // Setting/replace toolbar as the ActionBar4
-        getSupportActionBar().setTitle("My Courses"); // setting a title for this Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.iMyCourseToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Courses");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         courseList = (RecyclerView) findViewById(R.id.iMyCourseRecycleView);
@@ -95,7 +95,7 @@ public class I_MyCourse extends AppCompatActivity {
                         break;
                     }
                 }
-                ICourseAdapter = new I_CourseAdapter(I_MyCourse.this, courseNameList, courseIdList, courseDescList,courseCoverImgList);
+                ICourseAdapter = new I_CourseAdapter(I_MyCourse.this, courseNameList, courseIdList, courseDescList,courseCoverImgList,"myCourse");
                 courseList.setAdapter(ICourseAdapter);
             }
 

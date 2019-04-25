@@ -2,6 +2,7 @@ package com.example.pokelearn.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,18 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.pokelearn.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 
 public class ProfileFragment extends Fragment {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference mUsersDatabase;
     private TextView userName, userMail;
     private Button btnUpdProfile, btnChgPassword;
     private ImageView userProfilePic;
@@ -34,7 +42,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -42,15 +49,33 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        mUsersDatabase.keepSynced(true);
+
         userMail = v.findViewById(R.id.userMail);
         userName = v.findViewById(R.id.userName);
         btnUpdProfile = v.findViewById(R.id.btnUpdProfile);
         btnChgPassword = v.findViewById(R.id.btnChgPassword);
         userProfilePic = v.findViewById(R.id.profilePic);
 
-        userName.setText(user.getDisplayName());
-        userMail.setText(user.getEmail());
-        Glide.with(this).load(user.getPhotoUrl()).into(userProfilePic);
+        mUsersDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                String name = dataSnapshot.child("userName").getValue().toString();
+                String email = dataSnapshot.child("userEmail").getValue().toString();
+                String img = dataSnapshot.child("userImgUrl").getValue().toString();
+
+                userName.setText(name);
+                userMail.setText(email);
+                Picasso.get().load(img).into(userProfilePic);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         btnUpdProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +93,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(UpdatePassword);
             }
         });
-
         return v;
-
-
     }
 }

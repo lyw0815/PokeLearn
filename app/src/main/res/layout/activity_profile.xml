@@ -4,8 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
     tools:context=".Activities.Profile">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profileToolbar"
+        android:layout_width="424dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/profile_displayName"
@@ -15,7 +26,6 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        android:textColor="@color/backgroundcolor"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,9 +36,10 @@
         android:id="@+id/profile_image"
         android:layout_width="587dp"
         android:layout_height="258dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileToolbar"
         tools:srcCompat="@tools:sample/avatars[0]" />
 
     <Button
@@ -42,8 +53,9 @@
         android:text="Send Friend Request"
         android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_totalFriends" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
     <TextView
         android:id="@+id/profile_email"
@@ -53,26 +65,11 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        android:textColor="@color/backgroundcolor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_displayName" />
-
-    <TextView
-        android:id="@+id/profile_totalFriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="8dp"
-        android:text="Total Friends"
-        android:textColor="@color/backgroundcolor"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
     <Button
         android:id="@+id/profile_decline_btn"

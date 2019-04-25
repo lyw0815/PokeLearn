@@ -30,8 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
-public class Requests extends Fragment {
+public class FriendsFragment extends Fragment {
 
     private RecyclerView mFriendsList;
     private DatabaseReference mFriendsDatabase;
@@ -40,7 +39,7 @@ public class Requests extends Fragment {
     private String mCurrent_user_id;
     private View mMainView;
 
-    public Requests() {
+    public FriendsFragment() {
 
     }
 
@@ -49,12 +48,12 @@ public class Requests extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mMainView = inflater.inflate(R.layout.fragment_requests, container, false);
+        mMainView = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        mFriendsList = (RecyclerView) mMainView.findViewById(R.id.requestList);
+        mFriendsList = (RecyclerView) mMainView.findViewById(R.id.friendsList);
         mAuth = FirebaseAuth.getInstance();
         mCurrent_user_id = mAuth.getCurrentUser().getUid();
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friend Request").child(mCurrent_user_id);
+        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(mCurrent_user_id);
         mFriendsDatabase.keepSynced(true);
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         mUsersDatabase.keepSynced(true);
@@ -69,16 +68,16 @@ public class Requests extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerAdapter<Friends, Requests.RequestViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, Requests.RequestViewHolder>(
+        FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(
 
                 Friends.class,
                 R.layout.users_single_layout,
-                Requests.RequestViewHolder.class,
+                FriendsViewHolder.class,
                 mFriendsDatabase
 
         ) {
             @Override
-            protected void populateViewHolder(final Requests.RequestViewHolder requestViewHolder, Friends friends, int i) {
+            protected void populateViewHolder(final FriendsViewHolder friendsViewHolder, Friends friends, int i) {
 
                 final String list_user_id = getRef(i).getKey();
 
@@ -93,21 +92,50 @@ public class Requests extends Fragment {
                         if(dataSnapshot.hasChild("online")) {
 
                             String userOnline = dataSnapshot.child("online").getValue().toString();
-                            requestViewHolder.setUserOnline(userOnline);
+                            friendsViewHolder.setUserOnline(userOnline);
 
                         }
 
-                        requestViewHolder.setName(userName);
-                        requestViewHolder.setEmail(userEmail);
-                        requestViewHolder.setUserImage(userThumb, getContext());
+                        friendsViewHolder.setName(userName);
+                        friendsViewHolder.setEmail(userEmail);
+                        friendsViewHolder.setUserImage(userThumb, getContext());
 
-                        requestViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                Intent profileIntent = new Intent(getContext(), Profile.class);
-                                profileIntent.putExtra("user_id", list_user_id);
-                                startActivity(profileIntent);
+                                CharSequence options[] = new CharSequence[]{"Open Profile", "Send message"};
+
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                                builder.setTitle("Select Options");
+                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        //Click Event for each item.
+                                        if(i == 0){
+
+                                            Intent profileIntent = new Intent(getContext(), Profile.class);
+                                            profileIntent.putExtra("user_id", list_user_id);
+                                            startActivity(profileIntent);
+
+                                        }
+
+                                        if(i == 1){
+
+                                            Intent chatIntent = new Intent(getContext(), Chat.class);
+                                            chatIntent.putExtra("user_id", list_user_id);
+                                            chatIntent.putExtra("user_name", userName);
+                                            startActivity(chatIntent);
+
+                                        }
+
+                                    }
+                                });
+
+                                builder.show();
+
                             }
                         });
 
@@ -126,11 +154,11 @@ public class Requests extends Fragment {
     }
 
 
-    public static class RequestViewHolder extends RecyclerView.ViewHolder {
+    public static class FriendsViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
 
-        public RequestViewHolder(View itemView) {
+        public FriendsViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
         }
@@ -164,4 +192,7 @@ public class Requests extends Fragment {
 
 
     }
+
+
+
 }

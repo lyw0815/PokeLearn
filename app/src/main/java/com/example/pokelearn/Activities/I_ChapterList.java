@@ -61,7 +61,7 @@ public class I_ChapterList extends AppCompatActivity {
         Intent i = getIntent();
         final String CourseName = i.getStringExtra("CourseName");
         Intent j = getIntent();
-        final String CourseId = i.getStringExtra("CourseId");
+        final String CourseId = j.getStringExtra("CourseId");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.iChapterListToolbar);
         setSupportActionBar(toolbar);
@@ -216,7 +216,7 @@ public class I_ChapterList extends AppCompatActivity {
                         chapterList.add(chapter_title);
                         chapterIds.add(chapter_id);
                 }
-                IChapterAdapter = new I_ChapterAdapter(I_ChapterList.this, chapterList, chapterIds, CourseName, CourseId);
+                IChapterAdapter = new I_ChapterAdapter(I_ChapterList.this, chapterList, chapterIds, CourseName, CourseId, "details");
                 chapterLists.setAdapter(IChapterAdapter);
             }
 

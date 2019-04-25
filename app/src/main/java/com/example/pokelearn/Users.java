@@ -6,6 +6,8 @@ public class Users {
     String userEmail;
     String userPassword;
     String userImgUrl;
+//    String deviceToken;
+//    Long online;
 
     public Users(){
 
@@ -17,6 +19,8 @@ public class Users {
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userImgUrl = userImgUrl;
+//        this.deviceToken = deviceToken;
+//        this.online = online;
     }
 
     public String getUserId() {
@@ -36,4 +40,8 @@ public class Users {
     }
 
     public String getUserImgUrl() { return userImgUrl;}
+
+//    public String getDeviceToken(){return deviceToken;}
+//
+//    public Long getOnline(){return online;}
 }

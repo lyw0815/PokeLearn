@@ -89,12 +89,14 @@ public class ChapterList extends AppCompatActivity {
                 //ENROL!!!!!
                 if (enrol == false) {
                     mEnrolDatabase.child(user_id).child("studentId").setValue(user_id);
-                    mSCourseDatabase.child(CourseId).child("courseId").setValue(CourseId);
+//                    mSCourseDatabase.child(CourseId).child("courseId").setValue(CourseId);
+                    mSCourseDatabase.child(CourseId).setValue("");
                     Toast.makeText(ChapterList.this, "Yay, you have enrolled in this course!", Toast.LENGTH_SHORT).show();
                     btnEnrol.setText("Unenrol from this course");
                     btnEnrol.setBackground(getResources().getDrawable(R.drawable.signup_btn_style));
                     btnEnrol.setTextColor(getResources().getColor(R.color.colorPrimary));
                     enrol = true;
+                    finish();
                 }
                 else {
                     mEnrolDatabase.child(user_id).removeValue();
@@ -104,6 +106,7 @@ public class ChapterList extends AppCompatActivity {
                     btnEnrol.setBackground(getResources().getDrawable(R.drawable.reg_btn_style));
                     btnEnrol.setTextColor(getResources().getColor(R.color.backgroundcolor));
                     enrol = false;
+                    finish();
                 }
 
             }

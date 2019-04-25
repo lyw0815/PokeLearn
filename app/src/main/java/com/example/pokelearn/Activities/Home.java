@@ -2,6 +2,7 @@ package com.example.pokelearn.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,14 +25,21 @@ import com.example.pokelearn.Fragment.StudentDashFragment;
 import com.example.pokelearn.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-
-
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth2;
+    private DatabaseReference mUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +48,13 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //ini
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        if (mAuth.getCurrentUser() != null) {
+            mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+            mUserRef.keepSynced(true);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,73 +82,42 @@ public class Home extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-
             getSupportActionBar().setTitle("Home");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
-
-
         } else if (id == R.id.nav_instructor_dash) {
             getSupportActionBar().setTitle("Instructor Dashboard");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new InstructorDashFragment()).commit();
-
         } else if (id == R.id.nav_student_dash) {
             getSupportActionBar().setTitle("Student Dashboard");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new StudentDashFragment()).commit();
-
-
         } else if (id == R.id.nav_profile) {
             getSupportActionBar().setTitle("Profile");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
-
-
         } else if (id == R.id.nav_about) {
             getSupportActionBar().setTitle("About");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AboutFragment()).commit();
-
-
-        }
-
-          //  else if (id == R.id.nav_settings) {
-          //  getSupportActionBar().setTitle("Settings");
-          //  getSupportFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
-          //}
-
-        else if (id == R.id.nav_signout) {
-
+        } else if (id == R.id.nav_signout) {
             FirebaseAuth.getInstance().signOut();
             Intent loginActivity = new Intent(this, Login.class);
             startActivity(loginActivity);
             finish();
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -146,20 +126,60 @@ public class Home extends AppCompatActivity
     public void updateNavHeader(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = headerView.findViewById(R.id.nav_username);
-        TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
-        ImageView navUserPhot = headerView.findViewById(R.id.nav_user_photo);
+        final TextView navUsername = headerView.findViewById(R.id.nav_username);
+        final TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
+        final ImageView navUserPhot = headerView.findViewById(R.id.nav_user_photo);
 
-        navUserMail.setText(currentUser.getEmail());
-        navUsername.setText(currentUser.getDisplayName());
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        //glide to load user image
-        ///import library
-        Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhot);
+                String name = dataSnapshot.child("userName").getValue().toString();
+                String email = dataSnapshot.child("userEmail").getValue().toString();
+                String img = dataSnapshot.child("userImgUrl").getValue().toString();
+
+                navUserMail.setText(email);
+                navUsername.setText(name);
+                Picasso.get().load(img).into(navUserPhot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(currentUser == null){
+            sendToStart();
+        }
+        else {
+            mUserRef.child("online").setValue(true);
+        }
+    }
+
+    private void sendToStart() {
+        Intent startIntent = new Intent(this, Login.class);
+        startActivity(startIntent);
+        finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(currentUser != null) {
+            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
+        }
+
     }
 
 }

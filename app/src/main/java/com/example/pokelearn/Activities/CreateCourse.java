@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.example.pokelearn.Courses;
 import com.example.pokelearn.R;
 import com.google.android.gms.tasks.Continuation;
@@ -41,23 +39,23 @@ import com.squareup.picasso.Picasso;
 
 public class CreateCourse extends AppCompatActivity {
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
-    EditText courseName;
-    EditText courseDesc;
-    Button createCourseBtn;
-    Button selectCoverImageBtn;
-    ImageView courseCoverImage;
-    ProgressBar progressBar;
-    Uri pickedImgUri;
+    private EditText courseName;
+    private EditText courseDesc;
+    private Button createCourseBtn;
+    private Button selectCoverImageBtn;
+    private ImageView courseCoverImage;
+    private ProgressBar progressBar;
+    private Uri pickedImgUri;
 
     static int PReqCode = 1;
     static int REQUESCODE = 1;
 
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    DatabaseReference dbReference;
-    StorageReference stReference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private DatabaseReference dbReference;
+    private StorageReference stReference;
     private StorageTask uploadTask;
 
     @Override
@@ -69,7 +67,6 @@ public class CreateCourse extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Create Course");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -160,8 +157,8 @@ public class CreateCourse extends AppCompatActivity {
     }
 
     private void createCourse(){
-        String name = courseName.getText().toString().trim();
-        String desc = courseDesc.getText().toString().trim();
+        final String name = courseName.getText().toString().trim();
+        final String desc = courseDesc.getText().toString().trim();
         Uri uri = pickedImgUri;
         final String instr = currentUser.getDisplayName();
         final String instrMail = currentUser.getEmail();
@@ -180,9 +177,6 @@ public class CreateCourse extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         throw task.getException();
                     }
-
-                    // Continue with the task to get the download URL
-
                     return fileReference.getDownloadUrl();
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -191,8 +185,10 @@ public class CreateCourse extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         String id = dbReference.push().getKey();
                         Courses newCourse = new Courses(id,
-                                courseName.getText().toString().trim(),
-                                courseDesc.getText().toString().trim(),
+//                                courseName.getText().toString().trim(),
+//                                courseDesc.getText().toString().trim(),
+                                name,
+                                desc,
                                 task.getResult().toString().trim(),
                                 instr,
                                 instrMail,
@@ -202,15 +198,12 @@ public class CreateCourse extends AppCompatActivity {
                         showMessage("Course created");
                         finish();
                     } else {
-                        // Handle failures
-                        // ...
                     }
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-//                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(CreateCourse.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -238,7 +231,6 @@ public class CreateCourse extends AppCompatActivity {
     }
 
     private void showMessage(String message) {
-
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }
