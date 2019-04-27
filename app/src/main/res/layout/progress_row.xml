@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/progress_combo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/progress_chapter_title"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Chapter Title"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+
+        <ImageView
+            android:id="@+id/progressDone"
+            android:layout_width="29dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="380dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/circlebackgroundlightgreen"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_done_24dp"
+            tools:layout_editor_absoluteX="366dp"
+            tools:layout_editor_absoluteY="16dp" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

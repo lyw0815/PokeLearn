@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.Done">
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="110dp"
+        android:layout_marginTop="50dp"
+        android:text="Quiz Summary"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="wrap_content"
+        android:layout_height="244dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="106dp"
+        android:layout_marginEnd="102dp"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@drawable/badge" />
+
+    <ProgressBar
+    android:id="@+id/doneProgressBar"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="70dp"
+    android:layout_marginRight="70dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="220dp" />
+
+    <TextView
+        android:id="@+id/txtTotalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtTotalQuestion"
+        android:layout_centerHorizontal="true"
+        android:text="Score : 0"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/txtTotalQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="90dp"
+        android:text="passed_0_30"
+        android:textSize="28sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView13"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/btnGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <Button
+                android:id="@+id/btnTryAgain"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/reg_btn_style"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="try again"
+                android:textColor="@color/backgroundcolor"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnQuit"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/signup_btn_style"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Quit"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

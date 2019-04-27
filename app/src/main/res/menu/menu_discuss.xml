@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.pokelearn.Activities.Discuss">
+
+    <item android:id="@+id/searchFriend"
+        android:title="Search"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_search_24dp"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/allUserBtn"
+        android:icon="@drawable/ic_people_24dp"
+        android:orderInCategory="100"
+        android:title="PokeLearn Community"
+        app:showAsAction="always"/>
+</menu>
